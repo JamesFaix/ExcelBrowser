@@ -1,0 +1,13 @@
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\bin\Debug\ExcelBrowser.exe
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\bin\Debug\ExcelBrowser.pdb
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.csprojResolveAssemblyReference.cache
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\UI\MainWindow.g.cs
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\App.g.cs
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser_MarkupCompile.cache
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser_MarkupCompile.lref
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\UI\MainWindow.baml
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.g.resources
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.Properties.Resources.resources
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.csproj.GenerateResource.Cache
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.exe
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.pdb
