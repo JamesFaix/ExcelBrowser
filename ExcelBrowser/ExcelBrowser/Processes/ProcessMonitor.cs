@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ExcelBrowser.Processes {
 
     public class ProcessMonitor {
-              
+
         /// <summary>Initializes a new instance of the <see cref="ProcessUtilityBase"/> class. </summary>
         /// <param name="sessionId">ID of session to monitor. Defaults to current session.</param>
         public ProcessMonitor(int? sessionId = null) {
@@ -30,31 +30,33 @@ namespace ExcelBrowser.Processes {
         }
         /// <summary>The number of milliseconds between checking for process changes. </summary>
         private int refreshMilliseconds;
-        
+
         public int[] ProcessIds { get; private set; } = new int[0];
 
         public Func<string, bool> NameFilter {
             get { return nameFilter; }
-            set { nameFilter = value ?? (x => true); }
+            set { nameFilter = value ?? defaultNameFilter; }
         }
-        private Func<string, bool> nameFilter;
+        private Func<string, bool> nameFilter = defaultNameFilter;
+        private static Func<string, bool> defaultNameFilter = (x => true);
 
-        private int[] CurrentProcessIds =>
-            Process.GetProcesses()
+        private int[] GetCurrentProcessIds() {
+            return Process.GetProcesses()
                 .Where(p => nameFilter(p.ProcessName))
                 .Where(p => p.SessionId == this.SessionId)
                 .Select(p => p.Id)
                 .ToArray();
+        }
 
         /// <summary>Checks for process changes, then sleeps the thread. </summary>
         private void CheckForProcessChanges() {
             while (true) {
-                var current = CurrentProcessIds;
+                var current = GetCurrentProcessIds();
                 var previous = this.ProcessIds;
 
                 //Compare current and previous
-                var started = current.Except(previous).OrderBy(x => x).ToArray(); 
-                var stopped = previous.Except(current).OrderBy(x => x).ToArray();                                        
+                var started = current.Except(previous).OrderBy(x => x).ToArray();
+                var stopped = previous.Except(current).OrderBy(x => x).ToArray();
 
                 //Update internal state before publishing event, so callbacks can access clean data.
                 this.ProcessIds = current;
@@ -66,7 +68,7 @@ namespace ExcelBrowser.Processes {
                 Thread.Sleep(refreshMilliseconds);
             }
         }
-        
+
         public event EventHandler<ProcessChangeEventArgs> ProcessChange;
         private void OnProcessChange(int[] startedProcessIds, int[] stoppedProcessIds) =>
             ProcessChange?.Invoke(this, new ProcessChangeEventArgs(startedProcessIds, stoppedProcessIds));
