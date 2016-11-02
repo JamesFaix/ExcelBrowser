@@ -1,0 +1,9 @@
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\obj\Debug\ExcelBrowser.Test.csprojResolveAssemblyReference.cache
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\bin\Debug\ExcelBrowser.Test.dll
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\bin\Debug\ExcelBrowser.Test.pdb
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\bin\Debug\ExcelBrowser.exe
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\bin\Debug\nunit.framework.dll
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\bin\Debug\ExcelBrowser.pdb
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\bin\Debug\nunit.framework.xml
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\obj\Debug\ExcelBrowser.Test.dll
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser.Test\obj\Debug\ExcelBrowser.Test.pdb

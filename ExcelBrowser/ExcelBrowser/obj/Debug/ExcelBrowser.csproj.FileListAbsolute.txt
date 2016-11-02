@@ -11,3 +11,4 @@ C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug
 C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.csproj.GenerateResource.Cache
 C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.exe
 C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\obj\Debug\ExcelBrowser.pdb
+C:\Users\James\Documents\GitHub\ExcelBrowser\ExcelBrowser\ExcelBrowser\bin\Debug\ExcelBrowser.exe.config
