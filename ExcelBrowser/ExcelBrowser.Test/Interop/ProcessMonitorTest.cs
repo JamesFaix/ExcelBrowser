@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using NUnit.Framework;
 
-namespace ExcelBrowser.Processes.Test {
+namespace ExcelBrowser.Interop.Test {
 
     [TestFixture]
     public class ProcessMonitorTest {
@@ -26,20 +26,11 @@ namespace ExcelBrowser.Processes.Test {
         #endregion
 
         [Test]
-        public void ProcessMonitor_DefaultRefreshIs500() {
-            var pm = new ProcessMonitor();
-            Assert.AreEqual(500, pm.RefreshMilliseconds);
-        }
-
-        [Test]
-        public void ProcessMonitor_CanSetRefresh() {
-            var pm = new ProcessMonitor();
-            pm.RefreshMilliseconds = 20;
-            Assert.AreEqual(20, pm.RefreshMilliseconds);
-        }
-
-        [Test]
-        public void ProcessMonitor_CanStartProcess() {
+        public void Process_CanStartProcess() {
+            /* This test does not test the ProcessMonitor class itself.
+             * It tests the assumption that we can easily start processes, 
+             * which will be required to implement further tests. 
+             */
 
             //Check running processes
             var firstCheck = Process.GetProcesses().Select(p => p.Id).ToArray();
@@ -61,6 +52,19 @@ namespace ExcelBrowser.Processes.Test {
             }
         }
 
+        [Test]
+        public void ProcessMonitor_DefaultRefreshIs500() {
+            var pm = new ProcessMonitor();
+            Assert.AreEqual(500, pm.RefreshMilliseconds);
+        }
+
+        [Test]
+        public void ProcessMonitor_CanSetRefresh() {
+            var pm = new ProcessMonitor();
+            pm.RefreshMilliseconds = 20;
+            Assert.AreEqual(20, pm.RefreshMilliseconds);
+        }
+        
         [Test]
         public void ProcessMonitor_WillNotPublishChangesWhenNoProcessChanges() {
             var pm = new ProcessMonitor();

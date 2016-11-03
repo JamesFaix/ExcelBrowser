@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ExcelBrowser.Processes {
+namespace ExcelBrowser.Interop {
 
     public class ProcessChangeEventArgs : EventArgs {
 

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ExcelBrowser.Processes {
+namespace ExcelBrowser.Interop {
 
     public class ProcessMonitor {
 
-        /// <summary>Initializes a new instance of the <see cref="ProcessUtilityBase"/> class. </summary>
+        /// <summary>Initializes a new instance of the <see cref="ProcessMonitor"/> class. </summary>
         /// <param name="sessionId">ID of session to monitor. Defaults to current session.</param>
         public ProcessMonitor(int? sessionId = null) {
             this.SessionId = sessionId ?? Process.GetCurrentProcess().SessionId;
