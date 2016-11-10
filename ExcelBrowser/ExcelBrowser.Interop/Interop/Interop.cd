@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ExcelBrowser.Interop.AppFactory">
+    <Position X="4" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEBAAAAAAAAAAAAAAACAAAAAAAAAAAAIAAAAEAAA=</HashCode>
+      <FileName>Interop\AppFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Interop.ProcessWindowUtil">
+    <Position X="7.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAgAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\ProcessWindowUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Interop.WindowsApiUtil">
+    <Position X="0.5" Y="0.5" Width="3" />
+    <NestedTypes>
+      <Delegate Name="ExcelBrowser.Interop.WindowsApiUtil.EnumChildCallback" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interop\WindowsApiUtil.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IABACABAAAAAAAggAAQAAAAAACQAIKAASgAAAACAAAA=</HashCode>
+      <FileName>Interop\WindowsApiUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Interop.Session">
+    <Position X="0.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAAAACAgAAIAAAAAAAAAAAAAACAAIA=</HashCode>
+      <FileName>Interop\Session.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Interop.ExcelExtensionMethods">
+    <Position X="4" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Interop\ExcelExtensionMethods.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

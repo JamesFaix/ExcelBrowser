@@ -40,18 +40,12 @@
   <ItemGroup>
     <Compile Include="Interop\ExcelAppConverterTest.cs" />
     <Compile Include="Interop\FetcherTest.cs" />
-    <Compile Include="Interop\MonitorTest.cs" />
     <Compile Include="Interop\ProcessMonitorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ExcelBrowser\ExcelBrowser.csproj">
-      <Project>{feefff87-1f89-44f1-8e9f-ad78e9e9ea9c}</Project>
-      <Name>ExcelBrowser</Name>
-    </ProjectReference>
+    <None Include="TestWorkbook.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
@@ -75,15 +69,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelBrowser.Interop\ExcelBrowser.Interop.csproj">
+      <Project>{0c7edc69-0382-416d-be94-8abf86cae515}</Project>
+      <Name>ExcelBrowser.Interop</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

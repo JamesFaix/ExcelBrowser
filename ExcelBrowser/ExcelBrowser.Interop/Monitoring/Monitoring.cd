@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ExcelBrowser.Monitoring.ChangeDetector&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AgAAEAAAASAAAAAABAAAAAAARAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\ChangeDetector.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="valueChecker" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ExcelBrowser.Monitoring.Fetcher&lt;T&gt;" BaseTypeListCollapsed="true">
+    <Position X="3" Y="4" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAgAECAMQCAoAAIABAEAACQAQAAAgAIAAAAAAABAAAA=</HashCode>
+      <FileName>Monitoring\Fetcher.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="valueChecker" />
+      <Property Name="Status" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ExcelBrowser.Monitoring.Fetcher">
+    <Position X="0.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\Fetcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Monitoring.ValueChange&lt;T&gt;">
+    <Position X="7.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAEAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\ValueChange.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Monitoring.ValueChecker&lt;T&gt;">
+    <Position X="4.25" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AkAAEAAAACAAAmAAEAAACAAAAAAQAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Monitoring\ValueChecker.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="ExcelBrowser.Monitoring.FetchStatus">
+    <Position X="0.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAIAAAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Monitoring\FetchStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
