@@ -7,6 +7,7 @@ using xlChart = Microsoft.Office.Interop.Excel.Chart;
 using xlSheet = Microsoft.Office.Interop.Excel.Worksheet;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace ExcelBrowser.Model {
 
@@ -33,9 +34,9 @@ namespace ExcelBrowser.Model {
 
         }
 
-        public ImmutableArray<SheetToken> Sheets { get; }
+        public IEnumerable<SheetToken> Sheets { get; }
 
-        public ImmutableArray<WindowToken> Windows { get; }
+        public IEnumerable<WindowToken> Windows { get; }
 
         public SheetToken ActiveSheet { get; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Linq;
 using ExcelBrowser.Interop;
 using System.Diagnostics;
@@ -36,7 +37,7 @@ namespace ExcelBrowser.Model {
             //  Debug.WriteLine("");
         }
 
-        public ImmutableArray<AppToken> Apps { get; }
+        public IEnumerable<AppToken> Apps { get; }
 
         public AppToken ActiveApp { get; }
 

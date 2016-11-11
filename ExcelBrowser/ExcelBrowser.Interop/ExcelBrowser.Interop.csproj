@@ -47,11 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Change.cs" />
     <Compile Include="Model\Ids\AppId.cs" />
     <Compile Include="Model\Ids\BookId.cs" />
     <Compile Include="Model\Ids\SessionId.cs" />
-    <Compile Include="Model\ModelChange.cs" />
-    <Compile Include="Model\ModelChangeType.cs" />
     <Compile Include="Model\Ids\IdExtensionMethods.cs" />
     <Compile Include="Model\Ids\SheetId.cs" />
     <Compile Include="Model\Ids\WindowId.cs" />

@@ -6,6 +6,7 @@ using xlApp = Microsoft.Office.Interop.Excel.Application;
 using xlBook = Microsoft.Office.Interop.Excel.Workbook;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace ExcelBrowser.Model {
 
@@ -47,7 +48,7 @@ namespace ExcelBrowser.Model {
 
         public bool IsReachable { get; }
 
-        public ImmutableArray<BookToken> Books { get; private set; }
+        public IEnumerable<BookToken> Books { get; private set; }
 
         public BookToken ActiveBook { get; }
 
