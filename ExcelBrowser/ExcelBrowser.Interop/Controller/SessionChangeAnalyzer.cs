@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using ExcelBrowser.Model;
 using ExcelBrowser.Monitoring;
 using MoreLinq;
-using static ExcelBrowser.Model.ModelChangeType;
 
 namespace ExcelBrowser.Controller {
 
@@ -18,144 +15,85 @@ namespace ExcelBrowser.Controller {
 
             //Check for new session
             if (sessionChange.OldValue == null) {
-                return ImmutableArray.Create(ModelChange.Create(sessionChange.NewValue.Id, Add));
+                return ImmutableArray.Create(ModelChange.SessionStart(sessionChange.NewValue.Id));
             }
             else {
                 return GetSessionChanges(sessionChange).ToImmutableArray();
             }
         }
 
-        private static IEnumerable<ModelChange> GetSessionChanges(ValueChange<SessionToken> change) {
-            //  Debug.WriteLine($"SessionChangeAnalyzer.GetSessionChanges({change})");
-            return GetChanges<SessionId, SessionToken, AppId, AppToken>(change, (session => session.Apps), GetAppChanges)
-                 .Concat(GetIfIdChanged<SessionId, SessionToken, AppId, AppToken>(change, (app => app.ActiveApp), Activate));
+        private static IEnumerable<ModelChange> GetSessionChanges(ValueChange<SessionToken> diff) {
+
+            var ids = new ChangeSet<AppId, AppToken>(diff.Select(session => session.Apps));
+
+            var result = ids.Removes
+                .Concat(ids.Adds)
+                .Concat(ids.NestedChanges(GetAppChanges));
+
+            if (diff.Select(session => session.ActiveApp.Id).IsDifferent()) {
+                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveApp.Id));
+            }
+            return result;
         }
 
-        private static IEnumerable<ModelChange> GetAppChanges(ValueChange<AppToken> change) {
-            //  Debug.WriteLine($"SessionChangeAnalyzer.GetAppChanges({change})");
-            return GetIfChanged(change, (a => a.IsReachable), change.NewValue.Id, SetReachabilty)
-                .Concat(GetChanges<AppId, AppToken, BookId, BookToken>(change, (app => app.Books), GetBookChanges))
-                .Concat(GetIfIdChanged<AppId, AppToken, BookId, BookToken>(change, (app => app.ActiveBook), Activate))
-                .Concat(GetIfIdChanged<AppId, AppToken, WindowId, WindowToken>(change, (app => app.ActiveWindow), Activate));
-        }
+        private static IEnumerable<ModelChange> GetAppChanges(ValueChange<AppToken> diff) {
 
-        private static IEnumerable<ModelChange> GetBookChanges(ValueChange<BookToken> change) {
-            //   Debug.WriteLine($"SessionChangeAnalyzer.GetBookChanges({change})");
-            return GetSheetChanges(change)
-                .Concat(GetWindowChanges(change));
-        }
+            var ids = new ChangeSet<BookId, BookToken>(diff.Select(app => app.Books));
 
-        private static IEnumerable<ModelChange> GetSheetChanges(ValueChange<BookToken> change) {
-            //  Debug.WriteLine($"SessionChangeAnalyzer.GetSheetChanges({change})");
-            return GetChanges<BookId, BookToken, SheetId, SheetToken>(change, (book => book.Sheets))
-                .Concat(GetIfIdChanged<BookId, BookToken, SheetId, SheetToken>(change, (book => book.ActiveSheet), Activate));
-        }
+            var result = Enumerable.Empty<ModelChange>();
 
-        private static IEnumerable<ModelChange> GetWindowChanges(ValueChange<BookToken> change) {
-            //   Debug.WriteLine($"SessionChangeAnalyzer.GetWindowChanges({change})");
-            return GetChanges<BookId, BookToken, WindowId, WindowToken>(change, (book => book.Windows));
-        }
+            if (diff.Select(app => app.IsReachable).IsDifferent())
+                result = result.Concat(ModelChange.AppSetReachablity(diff.NewValue.Id, diff.NewValue.IsReachable));
 
-        #region Implementation
+            result = result.Concat(ids.Removes)
+                .Concat(ids.Adds)
+                .Concat(ids.NestedChanges(GetBookChanges));
 
-        private static IEnumerable<ModelChange> GetChanges<TParentId, TParentToken, TChildId, TChildToken>(
-            ValueChange<TParentToken> change,
-            Func<TParentToken, IEnumerable<TChildToken>> getChildren,
-            Func<ValueChange<TChildToken>, IEnumerable<ModelChange>> drillDown = null)
-            where TParentToken : Token<TParentId>
-            where TChildToken : Token<TChildId> {
-            // Debug.WriteLine($"SessionChangeAnalyzer.GetChanges({change})");
-            Debug.Assert(Equals(change.OldValue.Id, change.NewValue.Id));
+            if (diff.Select(app => app.ActiveBook?.Id).IsDifferent())
+                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveBook.Id));
 
-            var children = change.Select(getChildren);
-            var ids = IdChanges.Create<TChildId, TChildToken>(children);
-
-            var result = ids.Removed.Select(id => ModelChange.Create(id, Remove))
-                .Concat(ids.Added.Select(id => ModelChange.Create(id, Add)));
-
-            if (drillDown != null)
-                result = result.Concat(ids.Changes.SelectMany(drillDown));
+            if (diff.Select(app => app.ActiveWindow?.Id).IsDifferent())
+                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveWindow.Id));
 
             return result;
         }
 
-        private static IEnumerable<ModelChange> GetIfIdChanged<TParentId, TParentToken, TChildId, TChildToken>(
-            ValueChange<TParentToken> change,
-            Func<TParentToken, TChildToken> selector, ModelChangeType changeType)
-            where TParentToken : Token<TParentId>
-            where TChildToken : Token<TChildId> {
+        private static IEnumerable<ModelChange> GetBookChanges(ValueChange<BookToken> diff) {
+            //   Debug.WriteLine($"SessionChangeAnalyzer.GetBookChanges({change})");
 
-            var ids = change.Select(v => {
-                var key = selector(v);
-                return (key == null) ? default(TChildId) : key.Id;
-            });
+            //Book visibility changes
 
-            if (ids.IsDifferent()) {
-                var id = ids.NewValue;
-                if (Equals(id, null)) id = ids.OldValue;
+            var result = GetSheetChanges(diff)
+                .Concat(GetWindowChanges(diff));
 
-                return new[] { ModelChange.Create(id, changeType) };
+            if (diff.Select(book => book.ActiveSheet?.Id).IsDifferent()) {
+                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveSheet.Id));
             }
-            else {
-                return new ModelChange[0];
-            }
-        }
-        
-        private static IEnumerable<ModelChange> GetIfChanged<TSource, TKey, TId>(ValueChange<TSource> change, Func<TSource, TKey> selector, TId id, ModelChangeType changeType) {
 
-            var keys = change.Select(selector);
-
-            return keys.IsDifferent()
-                ? new[] { ModelChange.Create(id, changeType) }
-                : new ModelChange[0];
+            return result;
         }
 
-        #endregion
-    }
+        private static IEnumerable<ModelChange> GetSheetChanges(ValueChange<BookToken> diff) {
 
-    internal class IdChanges<TId, TToken>
-        where TToken : Token<TId> {
+            var ids = new ChangeSet<SheetId, SheetToken>(diff.Select(book => book.Sheets));
 
-        public IdChanges(ValueChange<IEnumerable<TToken>> tokens) {
+            var result = ids.Removes
+                .Concat(ids.Adds);
 
-            Old = tokens.OldValue.Ids().ToArray();
-            New = tokens.NewValue.Ids().ToArray();
+            //    .Concat(ids.NestedChanges(GetAppChanges));
 
-            Removed = tokens.OldValue.ExceptIds(New).Ids().ToArray();
-            Added = tokens.NewValue.ExceptIds(Old).Ids().ToArray();
-            Persistent = New.Intersect(Old).ToArray();
-
-            var persistedOld = tokens.OldValue.IntersectIds(Persistent).OrderBy(t => t.Id);
-            var persistedNew = tokens.NewValue.IntersectIds(Persistent).OrderBy(t => t.Id);
-
-            var persistedPairs = persistedOld.Zip(persistedNew, ValueChange.Create);
-
-            Changes = persistedPairs.Where(vc => vc.IsDifferent()).ToArray();
+            return result;
         }
 
-        public TId[] Old { get; }
-        public TId[] New { get; }
-        public TId[] Added { get; }
-        public TId[] Removed { get; }
-        public TId[] Persistent { get; }
-        public ValueChange<TToken>[] Changes { get; }
-    }
+        private static IEnumerable<ModelChange> GetWindowChanges(ValueChange<BookToken> diff) {
 
-    internal static class IdChanges {
+            var ids = new ChangeSet<WindowId, WindowToken>(diff.Select(book => book.Windows));
 
-        public static IdChanges<TId, TToken> Create<TId, TToken>(ValueChange<IEnumerable<TToken>> tokens)
-            where TToken : Token<TId> =>
-            new IdChanges<TId, TToken>(tokens);
+            var result = ids.Removes.Concat(ids.Adds);
 
-        public static IEnumerable<TId> Ids<TId>(this IEnumerable<Token<TId>> tokens) =>
-           tokens.Select(t => t.Id);
+            //    .Concat(ids.NestedChanges(GetAppChanges));
 
-        public static IEnumerable<TToken> ExceptIds<TId, TToken>(this IEnumerable<TToken> tokens, IEnumerable<TId> ids)
-            where TToken : Token<TId> =>
-            tokens.Where(t => !ids.Contains(t.Id));
-
-        public static IEnumerable<TToken> IntersectIds<TId, TToken>(this IEnumerable<TToken> tokens, IEnumerable<TId> ids)
-           where TToken : Token<TId> =>
-           tokens.Where(t => ids.Contains(t.Id));
+            return result;
+        }
     }
 }
