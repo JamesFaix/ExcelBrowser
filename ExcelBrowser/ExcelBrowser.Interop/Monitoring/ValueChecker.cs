@@ -40,9 +40,15 @@ namespace ExcelBrowser.Monitoring {
         public double RefreshSeconds { get; }
         
         public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);           
+        }
+        protected virtual void Dispose(bool disposing) {
+            if (disposing) {
+                Next = null;
+            }
             isDisposed = true;
             tokenSource.Cancel();
-            Next = null;
         }
 
         private void CheckLoop(CancellationToken token) {            

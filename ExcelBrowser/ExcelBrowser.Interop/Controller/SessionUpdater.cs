@@ -8,7 +8,7 @@ using ExcelBrowser.Interop;
 
 namespace ExcelBrowser.Controller {
 
-    public class SessionUpdater : IDisposable {
+    public sealed class SessionUpdater : IDisposable {
 
         public SessionUpdater(double refreshSeconds = 0.05) {
             Requires.Positive(refreshSeconds, nameof(refreshSeconds));
@@ -17,18 +17,18 @@ namespace ExcelBrowser.Controller {
             this.session = Session.Current;
             this.SessionToken = new SessionToken(session);
 
-            this.sessionMonitor = new ChangeDetector<SessionToken>(
+            this.detector = new ChangeDetector<SessionToken>(
                 getValue: () => new SessionToken(this.session),
                 refreshSeconds: refreshSeconds);
 
-            sessionMonitor.Changed += SessionChanged;
+            detector.Changed += DetectorChanged;
         }
 
         private readonly Session session;
-        private readonly ChangeDetector<SessionToken> sessionMonitor;
+        private readonly ChangeDetector<SessionToken> detector;
         public SessionToken SessionToken { get; private set; }
 
-        private void SessionChanged(object sender, EventArgs<ValueChange<SessionToken>> e) {
+        private void DetectorChanged(object sender, EventArgs<ValueChange<SessionToken>> e) {
             Debug.WriteLine("SessionUpdater.SessionChanged");
             var change = e.Value;
             var modelChanges = SessionChangeAnalyzer.FindChanges(change);
@@ -43,7 +43,7 @@ namespace ExcelBrowser.Controller {
             Changed?.Invoke(this, new EventArgs<IEnumerable<ModelChange>>(changes));
 
         public void Dispose() {
-            sessionMonitor.Dispose();
+            detector.Dispose();
         }
     }
 }

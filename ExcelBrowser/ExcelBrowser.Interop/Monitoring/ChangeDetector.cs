@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ExcelBrowser.Monitoring {
+
+    //Does not need to implement Dispose(bool disposing) because derived classes can just call Dispose()
+    [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
 
     public class ChangeDetector<T> : IDisposable {
 
@@ -48,6 +52,7 @@ namespace ExcelBrowser.Monitoring {
             }
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
         public void Dispose() {
             valueChecker.Dispose();
         }

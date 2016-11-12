@@ -60,7 +60,7 @@ namespace ExcelBrowser.Interop {
         /// the terminating null character; otherwise, the class name string is truncated to nMaxCount-1 characters.</param>
         /// <returns>If the function succeeds, the number of characters copied to the buffer not including the terminating null character;
         /// otherwise 0.</returns>
-        [DllImport(USER32)]
+        [DllImport(USER32, CharSet = CharSet.Unicode)]
         public static extern int GetClassName(int hWnd, StringBuilder lpClassName, int nMaxCount);
 
         //Gets the name of the COM class to which the specified window belongs.

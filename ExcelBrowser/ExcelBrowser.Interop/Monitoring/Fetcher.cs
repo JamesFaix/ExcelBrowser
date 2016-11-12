@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ExcelBrowser.Monitoring {
+    
+    //Does not need to implement Dispose(bool disposing) because derived classes can just call Dispose()
+    [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
 
     public class Fetcher<T> : IDisposable {
 
@@ -101,11 +105,12 @@ namespace ExcelBrowser.Monitoring {
             Complete?.Invoke(this, new EventArgs<Fallible<T>>(value));
         }
 
+        #endregion
+
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
         public void Dispose() {
             valueChecker.Dispose();
         }
-
-        #endregion
     }
 
     public static class Fetcher {
