@@ -15,7 +15,7 @@ namespace ExcelBrowser.Interop {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
             var mainWindowHandle = app.Hwnd;
-            var processId = WindowsApiUtil.GetProcessIdFromWindowHandle(mainWindowHandle);
+            var processId = WindowHandleUtil.GetProcessId(mainWindowHandle);
             return Process.GetProcessById(processId);
         }
 
@@ -43,7 +43,7 @@ namespace ExcelBrowser.Interop {
         /// </summary>
         /// <param name="handle">The handle.</param>
         public static xlApp FromMainWindowHandle(int handle) =>
-            WindowsApiUtil.ExcelApplicationFromMainWindowHandle(handle);
+            WindowHandleUtil.GetAppFromMainHandle(handle);
 
         public static xlApp PrimaryInstance {
             get {

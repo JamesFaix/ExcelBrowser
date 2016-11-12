@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Controller\ChangeSet.cs" />
     <Compile Include="Controller\TokenExtensionMethods.cs" />
+    <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Model\ModelChange.cs" />
     <Compile Include="Model\Ids\AppId.cs" />
     <Compile Include="Model\Ids\BookId.cs" />
