@@ -26,13 +26,21 @@ namespace ExcelBrowser.Interop {
         public int SessionId { get; }
 
         public IEnumerable<int> ProcessIds =>
-            Processes.Select(p => p.Id).ToArray();
+            Processes
+            .Select(p => p.Id)
+            .ToArray();
 
         public IEnumerable<int> UnreachableProcessIds =>
-            ProcessIds.Except(Apps.Select(a => a.AsProcess().Id)).ToArray();
+            ProcessIds
+            .Except(Apps.Select(a => a.AsProcess().Id))
+            .ToArray();
 
         public IEnumerable<xlApp> Apps =>
-            Processes.Select(TryGetApp).Values().ToArray();
+            Processes
+            .Select(TryGetApp)
+            .Values()
+            .Where(a => a.AsProcess().IsVisible())
+            .ToArray();
 
         public xlApp TopMost {
             get {

@@ -80,7 +80,7 @@
     <Compile Include="Model\WindowState.cs" />
     <Compile Include="Model\Tokens\WindowToken.cs" />
     <Compile Include="Interop\AppFactory.cs" />
-    <Compile Include="Interop\ProcessWindowUtil.cs" />
+    <Compile Include="Interop\ProcessExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Monitoring\ChangeDetector.cs" />
     <Compile Include="Utilities\EnumerableExtensionMethods.cs" />

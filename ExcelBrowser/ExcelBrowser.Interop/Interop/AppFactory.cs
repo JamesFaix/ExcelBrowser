@@ -16,7 +16,9 @@ namespace ExcelBrowser.Interop {
 
             var mainWindowHandle = app.Hwnd;
             var processId = NativeMethods.ProcessIdFromWindowHandle(mainWindowHandle);
-            return Process.GetProcessById(processId);
+            var process = Process.GetProcessById(processId);
+
+            return process;
         }
 
         /// <summary>

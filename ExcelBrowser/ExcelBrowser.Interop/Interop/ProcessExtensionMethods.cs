@@ -8,7 +8,7 @@ namespace ExcelBrowser.Interop {
     /// <summary>
     /// Provides methods to get the Z coordinate the main windows of processes.
     /// </summary>
-    public static class ProcessWindowUtil {
+    public static class ProcessExtensionMethods {
         
         /// <summary>
         /// Gets the "Z" value of the main window. Lower Z's are closer to the screen.
@@ -46,6 +46,11 @@ namespace ExcelBrowser.Interop {
         public static Process TopMost(this IEnumerable<Process> processes) {
             Requires.NotNull(processes, nameof(processes));
             return OrderByZ(processes).FirstOrDefault();
+        }
+
+        public static bool IsVisible(this Process process) {
+            Requires.NotNull(process, nameof(process));
+            return process.MainWindowHandle.ToInt32() != 0;
         }
     }
 }

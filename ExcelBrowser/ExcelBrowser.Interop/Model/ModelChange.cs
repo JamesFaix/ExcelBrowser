@@ -21,9 +21,8 @@
         private const string ADD = "Added";
         private const string REMOVE = "Removed";
         private const string ACTIVATE = "Activated";
-        private const string VISIBLE = "SetVisibility";
-        private const string REACHABLE = "SetReachability";
-        private const string STATE = "SetState";
+        private const string VISIBLE = "Visible";
+        private const string STATE = "State";
 
         public static ModelChange Added<TId>(TId id) =>
             new ModelChange<TId>(ADD, id);
@@ -39,10 +38,7 @@
 
         public static ModelChange SessionStart(SessionId id) => 
             new ModelChange<SessionId>(START, id);
-
-        public static ModelChange AppSetReachablity(AppId id, bool value) => 
-            new ModelChange<AppId, bool>(REACHABLE, id, value);
-
+        
         public static ModelChange WindowSetState(WindowId id, WindowState value) => 
             new ModelChange<WindowId, WindowState>(STATE, id, value);
 
@@ -64,6 +60,6 @@
 
         public TValue Value { get; }
 
-        public override string ToString() => $"{Type} @ {Id} | {Value}";
+        public override string ToString() => $"{Type} @ {Id}, Value: {Value}";
     }
 }

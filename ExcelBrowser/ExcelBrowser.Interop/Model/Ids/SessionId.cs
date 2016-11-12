@@ -26,6 +26,6 @@ namespace ExcelBrowser.Model {
 
         #endregion
 
-        public override string ToString() => $"Session: {Id}";
+        public override string ToString() => $"{{Session: {Id}}}";
     }
 }

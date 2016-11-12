@@ -41,6 +41,6 @@ namespace ExcelBrowser.Model {
 
         #endregion
 
-        public override string ToString() => $"Process: {ProcessId}, Book: {BookName}, Sheet: {SheetName}";
+        public override string ToString() => $"{{Process: {ProcessId}, Book: {BookName}, Sheet: {SheetName}}}";
     }
 }

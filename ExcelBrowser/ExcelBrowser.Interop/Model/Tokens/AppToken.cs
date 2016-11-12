@@ -6,6 +6,7 @@ using xlBook = Microsoft.Office.Interop.Excel.Workbook;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using ExcelBrowser.Interop;
 
 #pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
@@ -17,13 +18,17 @@ namespace ExcelBrowser.Model {
     public class AppToken : Token<AppId> {
 
         public AppToken(xlApp app) : this(app?.Id()) {
-            //    Debug.WriteLine("AppToken.Constructor");
-
             try {
-                //Test if reachable
-                IsReachable = true;
-                IsVisible = app.Visible;
-
+                IsVisible = app.Visible 
+                    && app.AsProcess().IsVisible();
+            }
+            catch (COMException x) 
+            when (x.Message.StartsWith("The message filter indicated that the application is busy.")) {
+                Debug.WriteLine($"Busy @ {Id}");
+                IsVisible = false;
+            }      
+            
+            if (IsVisible) {
                 Books = app.Workbooks.OfType<xlBook>()
                     .Select(wb => new BookToken(wb))
                     .ToImmutableArray();
@@ -40,16 +45,7 @@ namespace ExcelBrowser.Model {
                     ActiveWindow = Books.Single(b => Equals(b.Id.BookName, id.BookName))
                         .Windows.Single(w => Equals(w.Id, id));
                 }
-            }
-            catch (COMException x) 
-            when (x.Message.StartsWith("The message filter indicated that the application is busy.")) {
-                Debug.WriteLine($"Busy @ {Id}");
-                IsReachable = false;
-                IsVisible = false;
-                Books = null;
-                ActiveBook = null;
-                ActiveWindow = null;
-            }            
+            }      
         }
 
         private AppToken(AppId id) : base(id) { }
@@ -61,7 +57,6 @@ namespace ExcelBrowser.Model {
         }
 
         public bool IsVisible { get; }
-        public bool IsReachable { get; }
 
         public IEnumerable<BookToken> Books { get; private set; }
 
@@ -72,7 +67,6 @@ namespace ExcelBrowser.Model {
         #region Equality
 
         public bool Equals(AppToken other) => base.Equals(other)
-            && IsReachable == other.IsReachable
             && IsVisible == other.IsVisible
             && Books.SequenceEqual(other.Books)
             && Equals(ActiveBook, other.ActiveBook)

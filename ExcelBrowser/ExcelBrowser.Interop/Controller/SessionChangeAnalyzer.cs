@@ -45,9 +45,6 @@ namespace ExcelBrowser.Controller {
 
             var result = Enumerable.Empty<ModelChange>();
 
-            if (diff.IsChanged(app => app.IsReachable))
-                result = result.Concat(ModelChange.AppSetReachablity(diff.NewValue.Id, diff.NewValue.IsReachable));
-
             if (diff.IsChanged(app => app.IsVisible))
                 result = result.Concat(ModelChange.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible));
 
