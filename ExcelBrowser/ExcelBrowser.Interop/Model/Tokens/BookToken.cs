@@ -6,8 +6,10 @@ using xlBook = Microsoft.Office.Interop.Excel.Workbook;
 using xlChart = Microsoft.Office.Interop.Excel.Chart;
 using xlSheet = Microsoft.Office.Interop.Excel.Worksheet;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
+using ExcelBrowser.Interop;
 
-#pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
+#pragma warning disable CS0659 
+//Does not need to override GetHashCode because base class implementation is sufficient.
 
 namespace ExcelBrowser.Model {
 
@@ -32,6 +34,8 @@ namespace ExcelBrowser.Model {
             else if (activeSheet is xlChart) ActiveSheet = new SheetToken(activeSheet as xlChart);
             else throw new InvalidOperationException("Invalid sheet type.");
 
+            IsVisible = book.IsVisible();
+            IsAddIn = book.IsAddin;
         }
 
         public IEnumerable<SheetToken> Sheets { get; }
@@ -40,12 +44,18 @@ namespace ExcelBrowser.Model {
 
         public SheetToken ActiveSheet { get; }
 
+        public bool IsVisible { get; }
+
+        public bool IsAddIn { get; }
+
         #region Equality
 
         public bool Equals(BookToken other) => base.Equals(other)
             && Sheets.SequenceEqual(other.Sheets)
             && Windows.SequenceEqual(other.Windows)
-            && Equals(ActiveSheet , other.ActiveSheet);
+            && Equals(ActiveSheet , other.ActiveSheet)
+            && IsVisible == other.IsVisible
+            && IsAddIn == other.IsAddIn;
 
         public override bool Equals(object obj) => Equals(obj as BookToken);
 

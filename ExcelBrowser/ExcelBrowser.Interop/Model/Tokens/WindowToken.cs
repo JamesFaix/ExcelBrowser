@@ -13,12 +13,22 @@ namespace ExcelBrowser.Model {
         public WindowToken(xlWin window) : base(window?.Id()) {
           //  Debug.WriteLine("WindowToken.Constructor");
             State = window.WindowState.Outer();
+            IsVisible = window.Visible;
         }
 
+        public bool IsVisible { get; }
         public WindowState State { get; }
 
-        public bool Equals(WindowToken other) => base.Equals(other);
+        #region Equality
+
+        public bool Matches(WindowToken other) => base.Equals(other);
+
+        public bool Equals(WindowToken other) => base.Equals(other)
+            && IsVisible == other.IsVisible
+            && State == other.State;
 
         public override bool Equals(object obj) => Equals(obj as WindowToken);
+
+        #endregion
     }
 }
