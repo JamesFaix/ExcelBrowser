@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Text;
+using xlWin = Microsoft.Office.Interop.Excel.Window;
+using xlApp = Microsoft.Office.Interop.Excel.Application;
 
 namespace ExcelBrowser.Interop {
 
@@ -12,6 +14,16 @@ namespace ExcelBrowser.Interop {
         private const string USER32 = "User32.dll";
         private const string OLEACC = "Oleacc.dll";
 
+        #region Process ID from handle
+
+        public static int ProcessIdFromWindowHandle(int windowHandle) {
+            Requires.NotDefault(windowHandle, nameof(windowHandle));
+
+            int processId;
+            GetWindowThreadProcessId(windowHandle, out processId);
+            return processId;
+        }
+
         /// <summary>Retrieves the identifier of the thread that created the specified window and optionally, 
         /// the identifier of the process that created the window.</summary>
         /// <param name="hWnd">A handle to the window.</param>
@@ -20,7 +32,17 @@ namespace ExcelBrowser.Interop {
         /// to the variable; otherwise it does not.</param>
         /// <returns>The identifier of the thread that created the window.</returns>
         [DllImport(USER32)]
-        public static extern int GetWindowThreadProcessId(int hWnd, out int lpdwProcessId);
+        private static extern int GetWindowThreadProcessId(int hWnd, out int lpdwProcessId);
+
+        #endregion
+
+        #region Excel window from handle
+
+        public static xlWin ExcelWindowFromHandle(int handle) {
+            xlWin result;
+            AccessibleObjectFromWindow(handle, windowObjectId, windowInterfaceId, out result);
+            return result;
+        }
 
         /// <summary>Retrieves the address of the specified interface for the object associated with the specified window.</summary>
         /// <param name="hwnd">Specifies the handle of a window for which an object is to be retrieved. 
@@ -32,7 +54,25 @@ namespace ExcelBrowser.Interop {
         /// <param name="ppvObject">Address of a pointer variable that receives the address of the specified interface.</param>
         /// <returns>If successful, returns S_OK; otherwise returns E_INVALIDARG, E_NOINTERFACE, or another standard COM error code.</returns>
         [DllImport(OLEACC)]
-        public static extern int AccessibleObjectFromWindow(int hwnd, uint dwObjectID, byte[] riid, out object ppvObject);
+        private static extern int AccessibleObjectFromWindow(int hwnd, uint dwObjectID, byte[] riid, out xlWin ppvObject);
+
+        private const uint windowObjectId = 0xFFFFFFF0;
+        private static byte[] windowInterfaceId = new Guid("{00020400-0000-0000-C000-000000000046}").ToByteArray();
+
+        #endregion
+
+        #region Excel App from handle
+
+        public static xlApp AppFromMainWindowHandle(int mainWindowHandle) {
+            Requires.NotDefault(mainWindowHandle, nameof(mainWindowHandle));
+
+            int childHandle = 0;
+            EnumChildWindows(mainWindowHandle, NextChildWindowHandle, ref childHandle);
+
+            var win = ExcelWindowFromHandle(childHandle);
+
+            return win?.Application;
+        }
 
         /// <summary>Enumerates the child windows that belong to the specified parent window by passing the handle to each child window, in turn, 
         /// to an application-defined callback function. EnumChildWindows continues until the last child window is enumerated or 
@@ -43,7 +83,7 @@ namespace ExcelBrowser.Interop {
         /// <param name="lParam">An application-defined value to be passed tot he callback function.</param>
         /// <returns>The return value is not used.</returns>
         [DllImport(USER32)]
-        public static extern bool EnumChildWindows(int hWndParent, EnumChildCallback lpEnumFunc, ref int lParam);
+        private static extern bool EnumChildWindows(int hWndParent, EnumChildCallback lpEnumFunc, ref int lParam);
 
         /// <summary>An application-defined callback function used with the EnumChildWindows function. 
         /// It receives the child window handles.  The WNDENUMPROC type defines a pointer to this callback function.
@@ -51,8 +91,33 @@ namespace ExcelBrowser.Interop {
         /// <param name="hwnd">A handle to the child window of the parent window specified in EnumChildWindows.</param>
         /// <param name="lParam">The application-defined value given in EnumChildWindows.</param>
         /// <returns>To continue enumeration, the callback function must return TRUE; to stop enumeration it must return FALSE.</returns>
-        public delegate bool EnumChildCallback(int hwnd, ref int lParam);
+        private delegate bool EnumChildCallback(int hwnd, ref int lParam);
 
+        private static bool NextChildWindowHandle(int currentChildHandle, ref int nextChildHandle) {
+            //  Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss.fff") + " - NextChildWindowHandle(" + currentChildHandle + ")");
+            const string excelClassName = "EXCEL7";
+
+            var result = true;
+
+            var className = GetClassName(currentChildHandle);
+            // Debug.WriteLine(currentChildHandle + " ClassName: " + className);
+            if (className == excelClassName) {
+                nextChildHandle = currentChildHandle;
+                result = false;
+            }
+            //  Debug.WriteLine(DateTime.Now.ToString("hh:mm:ss.fff") + " - NextChildWindowHandle(" + currentChildHandle + ", ref " + nextChildHandle + ") => " + result);
+            return result;
+        }
+
+        #region Get class name
+
+        //Gets the name of the COM class to which the specified window belongs.
+        private static string GetClassName(int windowHandle) {
+            var buffer = new StringBuilder(128);
+            GetClassName(windowHandle, buffer, 128);
+            return buffer.ToString();
+        }
+        
         /// <summary>Retrieves the name of the class to which the specified window belongs.</summary>
         /// <param name="hWnd">A handle to the window and, indirectly, the class to which the window belongs.</param>
         /// <param name="lpClassName">The class name string.</param>
@@ -61,13 +126,24 @@ namespace ExcelBrowser.Interop {
         /// <returns>If the function succeeds, the number of characters copied to the buffer not including the terminating null character;
         /// otherwise 0.</returns>
         [DllImport(USER32, CharSet = CharSet.Unicode)]
-        public static extern int GetClassName(int hWnd, StringBuilder lpClassName, int nMaxCount);
+        private static extern int GetClassName(int hWnd, StringBuilder lpClassName, int nMaxCount);
 
-        //Gets the name of the COM class to which the specified window belongs.
-        public static string GetClassName(int windowHandle) {
-            var buffer = new StringBuilder(128);
-            GetClassName(windowHandle, buffer, 128);
-            return buffer.ToString();
+        #endregion
+
+        #endregion
+
+        #region Window Z
+
+        public static int GetWindowZ(int windowHandle) {
+            var z = 0;
+            //Count all windows above the starting window
+            for (var h = new IntPtr(windowHandle); 
+                h != IntPtr.Zero; 
+                h = GetWindow(h, GW_HWNDPREV)) {
+
+                z++;
+            }
+            return z;
         }
 
         /// <summary>Retrieves a handle to a window that has the specified relationship 
@@ -80,7 +156,15 @@ namespace ExcelBrowser.Interop {
         /// <returns>If the function succeeds, a window handle; if no window exists with the specified relationship
         /// to the specified window, NULL.</returns>
         [DllImport(USER32)]
-        public static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
 
+        /// <summary>
+        /// The retrieved handle identifies the window above the specified window in the Z order.
+        /// If the specified window is a topmost window, the handle identifies a topmost window.
+        /// If the specified window is a top-level window, the handle identifies a top-level window. 
+        /// If the specified window is a child window, the handle identifies a sibling window.
+        /// </summary>
+        private const int GW_HWNDPREV = 3;
+        #endregion
     }
 }

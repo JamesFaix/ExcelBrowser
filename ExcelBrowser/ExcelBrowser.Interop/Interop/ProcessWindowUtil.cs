@@ -17,7 +17,7 @@ namespace ExcelBrowser.Interop {
         /// <returns>"Z" value of process's main window.</returns>
         public static int MainWindowZ(this Process process) {
             Requires.NotNull(process, nameof(process));            
-            return WindowHandleUtil.GetWindowZ(process.MainWindowHandle);
+            return NativeMethods.GetWindowZ(process.MainWindowHandle.ToInt32());
         }
 
         /// <summary>

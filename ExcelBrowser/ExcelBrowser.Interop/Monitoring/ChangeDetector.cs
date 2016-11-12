@@ -48,7 +48,7 @@ namespace ExcelBrowser.Monitoring {
                 }
             }
             else {
-                Debug.WriteLine("ChangeDetector: " + e.Value.Error.Message);
+                Debug.WriteLine("ChangeDetector: " + e.Value.Error.Message.Replace("\n", " "));
             }
         }
 

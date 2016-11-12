@@ -15,7 +15,7 @@ namespace ExcelBrowser.Interop {
             if (app == null) throw new ArgumentNullException(nameof(app));
 
             var mainWindowHandle = app.Hwnd;
-            var processId = WindowHandleUtil.GetProcessId(mainWindowHandle);
+            var processId = NativeMethods.ProcessIdFromWindowHandle(mainWindowHandle);
             return Process.GetProcessById(processId);
         }
 
@@ -28,7 +28,9 @@ namespace ExcelBrowser.Interop {
 
             var handle = process.MainWindowHandle.ToInt32();
 
-            return FromMainWindowHandle(handle);
+            var result = FromMainWindowHandle(handle);
+            //Debug.Assert(result != null);
+            return result;
         }
 
         /// <summary>
@@ -43,14 +45,16 @@ namespace ExcelBrowser.Interop {
         /// </summary>
         /// <param name="handle">The handle.</param>
         public static xlApp FromMainWindowHandle(int handle) =>
-            WindowHandleUtil.GetAppFromMainHandle(handle);
+            NativeMethods.AppFromMainWindowHandle(handle);
 
         public static xlApp PrimaryInstance {
             get {
                 try {
                     return (xlApp)Marshal.GetActiveObject("Excel.Application");
                 }
-                catch {
+                catch (COMException x)
+                when (x.Message.StartsWith("Operation unavailable")) {
+                    Debug.WriteLine("AppFactory: Primary instance unavailable.");
                     return null;
                 }
             }

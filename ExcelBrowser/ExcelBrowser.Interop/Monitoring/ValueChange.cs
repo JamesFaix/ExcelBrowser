@@ -23,13 +23,17 @@ namespace ExcelBrowser.Monitoring {
         /// <summary>Returns a <see cref="string" /> that represents this instance.</summary>
         public override string ToString() => $"ValueChange: {{{OldValue}}} => {{{NewValue}}}";
 
-        public bool IsDifferent(Func<T, T, bool> equalityComparison = null) {
+        public bool IsChanged(Func<T, T, bool> equalityComparison = null) {
             if (equalityComparison == null) {
                 return !Equals(OldValue, NewValue);
             }
             else {
                 return !equalityComparison(OldValue, NewValue);
             }
+        }
+
+        public bool IsChanged<TKey>(Func<T, TKey> selector, Func<TKey, TKey, bool> equalityComparison = null) {
+            return Select(selector).IsChanged(equalityComparison);
         }
 
         public ValueChange<TResult> Select<TResult>(Func<T, TResult> selector) {

@@ -23,7 +23,7 @@ namespace ExcelBrowser.Controller {
 
             var persistedPairs = persistedOld.Zip(persistedNew, ValueChange.Create);
 
-            Diffs = persistedPairs.Where(vc => vc.IsDifferent()).ToArray();
+            Diffs = persistedPairs.Where(vc => vc.IsChanged()).ToArray();
         }
 
         public TId[] Old { get; }
@@ -33,8 +33,8 @@ namespace ExcelBrowser.Controller {
         public TId[] Persistent { get; }
         public ValueChange<TToken>[] Diffs { get; }
 
-        public IEnumerable<ModelChange> Adds => Added.Select(id => ModelChange.Added(id));
-        public IEnumerable<ModelChange> Removes => Removed.Select(id => ModelChange.Removed(id));
+        public IEnumerable<ModelChange> AddedChanges => Added.Select(id => ModelChange.Added(id));
+        public IEnumerable<ModelChange> RemovedChanges => Removed.Select(id => ModelChange.Removed(id));
 
         public IEnumerable<ModelChange> NestedChanges(Func<ValueChange<TToken>, IEnumerable<ModelChange>> selector) {
             Requires.NotNull(selector, nameof(selector));
