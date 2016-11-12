@@ -1,7 +1,7 @@
 ﻿using System;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
-using ExcelBrowser.Interop;
-using System.Diagnostics;
+
+#pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
 namespace ExcelBrowser.Model {
 

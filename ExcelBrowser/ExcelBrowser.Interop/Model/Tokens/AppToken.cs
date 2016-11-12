@@ -1,12 +1,11 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using ExcelBrowser.Interop;
 using xlApp = Microsoft.Office.Interop.Excel.Application;
 using xlBook = Microsoft.Office.Interop.Excel.Workbook;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
-using System.Diagnostics;
-using System.Collections.Generic;
+
+#pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
 namespace ExcelBrowser.Model {
 

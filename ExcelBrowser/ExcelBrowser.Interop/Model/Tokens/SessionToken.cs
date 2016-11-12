@@ -1,9 +1,11 @@
 ﻿using System;
-using System.Collections.Immutable;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using ExcelBrowser.Interop;
-using System.Diagnostics;
+
+#pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
 namespace ExcelBrowser.Model {
 
@@ -49,9 +51,9 @@ namespace ExcelBrowser.Model {
             && Apps.SequenceEqual(other.Apps)
             && Equals(ActiveApp, other.ActiveApp)
             && Equals(Primary, other.Primary);
-
+                
         public override bool Equals(object obj) => Equals(obj as SessionToken);
-
+        
         public bool Matches(SessionToken other) => base.Equals(other);
 
         #endregion

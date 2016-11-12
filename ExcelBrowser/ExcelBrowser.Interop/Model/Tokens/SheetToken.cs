@@ -1,7 +1,8 @@
-﻿using xlChart = Microsoft.Office.Interop.Excel.Chart;
+﻿using System;
+using xlChart = Microsoft.Office.Interop.Excel.Chart;
 using xlSheet = Microsoft.Office.Interop.Excel.Worksheet;
-using System.Diagnostics;
-using System;
+
+#pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
 namespace ExcelBrowser.Model {
 
@@ -11,7 +12,7 @@ namespace ExcelBrowser.Model {
     public class SheetToken : Token<SheetId>, IEquatable<SheetToken> {
 
         public SheetToken(xlSheet sheet) : base(sheet?.Id()) {
-        //    Debug.WriteLine("SheetToken.Constructor");
+            //Debug.WriteLine("SheetToken.Constructor");
         }
 
         public SheetToken(xlChart chart) : base(chart?.Id()) {
