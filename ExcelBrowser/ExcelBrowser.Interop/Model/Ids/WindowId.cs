@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace ExcelBrowser.Model {
 
+    [DataContract]
     public class WindowId : IEquatable<WindowId>, IComparable<WindowId> {
 
         public WindowId(int processId, string bookName, int windowIndex) {
@@ -11,8 +13,13 @@ namespace ExcelBrowser.Model {
             WindowIndex = windowIndex;
         }
 
+        [DataMember(Order =1)]
         public int ProcessId { get; }
+
+        [DataMember(Order = 2)]
         public string BookName { get; }
+
+        [DataMember(Order = 3)]
         public int WindowIndex { get; }
 
         #region Equality / Comparison
@@ -40,6 +47,6 @@ namespace ExcelBrowser.Model {
 
         #endregion
 
-        public override string ToString() => $"{{Process: {ProcessId}, Book: {BookName}, Window: {WindowIndex}}}";
+        public override string ToString() => Serializer.Serialize(this);
     }
 }

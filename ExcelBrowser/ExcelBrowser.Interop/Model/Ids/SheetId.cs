@@ -1,19 +1,27 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace ExcelBrowser.Model {
 
+    [DataContract]
     public class SheetId : IEquatable<SheetId>, IComparable<SheetId> {
 
         public SheetId(int processId, string bookName, string sheetName) {
             Requires.NotNull(bookName, nameof(bookName));
             Requires.NotNull(sheetName, nameof(sheetName));
+
             ProcessId = processId;
             BookName = bookName;
             SheetName = sheetName;
         }
 
+        [DataMember(Order =1)]
         public int ProcessId { get; }
+
+        [DataMember(Order = 2)]
         public string BookName { get; }
+
+        [DataMember(Order = 3)]
         public string SheetName { get; }
 
         #region Equality / Comparison
@@ -41,6 +49,6 @@ namespace ExcelBrowser.Model {
 
         #endregion
 
-        public override string ToString() => $"{{Process: {ProcessId}, Book: {BookName}, Sheet: {SheetName}}}";
+        public override string ToString() => Serializer.Serialize(this);
     }
 }

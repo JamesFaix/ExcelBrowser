@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Serialization;
+using ExcelBrowser.Interop;
 using xlApp = Microsoft.Office.Interop.Excel.Application;
 using xlBook = Microsoft.Office.Interop.Excel.Workbook;
 using xlWin = Microsoft.Office.Interop.Excel.Window;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
-using ExcelBrowser.Interop;
 
 #pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
@@ -15,19 +16,22 @@ namespace ExcelBrowser.Model {
     /// <summary>
     /// Represents a snapshot of an Excel application instance.
     /// </summary>
+    [DataContract]
     public class AppToken : Token<AppId> {
 
         public AppToken(xlApp app) : this(app?.Id()) {
             try {
-                IsVisible = app.Visible 
+                IsVisible = app.Visible
                     && app.AsProcess().IsVisible();
             }
-            catch (COMException x) 
+            catch (COMException x)
             when (x.Message.StartsWith("The message filter indicated that the application is busy.")) {
+                //This means the application is in a state that does not permit COM automation.
+                //Often, this is due to a dialog window or right-click context menu being open.
                 Debug.WriteLine($"Busy @ {Id}");
                 IsVisible = false;
-            }      
-            
+            }
+
             if (IsVisible) {
                 Books = app.Workbooks.OfType<xlBook>()
                     .Select(wb => new BookToken(wb))
@@ -45,7 +49,7 @@ namespace ExcelBrowser.Model {
                     ActiveWindow = Books.Single(b => Equals(b.Id.BookName, id.BookName))
                         .Windows.Single(w => Equals(w.Id, id));
                 }
-            }      
+            }
         }
 
         private AppToken(AppId id) : base(id) { }
@@ -56,12 +60,16 @@ namespace ExcelBrowser.Model {
             };
         }
 
+        [DataMember(Order = 1)]
         public bool IsVisible { get; }
 
+        [DataMember(Order = 2)]
         public IEnumerable<BookToken> Books { get; private set; }
 
+        [DataMember(Order = 3)]
         public BookToken ActiveBook { get; }
 
+        [DataMember(Order = 4)]
         public WindowToken ActiveWindow { get; }
 
         #region Equality
@@ -77,5 +85,7 @@ namespace ExcelBrowser.Model {
         public bool Matches(AppToken other) => base.Equals(other);
 
         #endregion
+
+        public override string ToString() => Serializer.Serialize(this);
     }
 }

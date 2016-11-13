@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace ExcelBrowser.Model {
 
+    [DataContract]
     public class SessionId : IEquatable<SessionId>, IComparable<SessionId> {
 
         public SessionId(int id) {
             this.Id = id;
         }
 
+        [DataMember(Name = "SessionId")]
         public int Id { get; }
 
         #region Equality / Comparison
@@ -26,6 +29,6 @@ namespace ExcelBrowser.Model {
 
         #endregion
 
-        public override string ToString() => $"{{Session: {Id}}}";
+        public override string ToString() => Serializer.Serialize(this);
     }
 }

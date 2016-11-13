@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
 namespace ExcelBrowser.Model {
 
+    [DataContract]
     public class AppId : IEquatable<AppId>, IComparable<AppId> {
 
         public AppId(int processId) {
             this.ProcessId = processId;
         }
 
+        [DataMember]
         public int ProcessId { get; }
 
         #region Equality / Comparison
@@ -26,6 +29,6 @@ namespace ExcelBrowser.Model {
 
         #endregion
 
-        public override string ToString() => $"{{Process: {ProcessId}}}";
+        public override string ToString() => Serializer.Serialize(this);
     }
 }
