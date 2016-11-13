@@ -1,9 +1,11 @@
-﻿using Microsoft.Office.Interop.Excel;
-using System.Linq;
+﻿using System.Linq;
+using Microsoft.Office.Interop.Excel;
 
 namespace ExcelBrowser.Interop {
 
     public static class ExcelExtensionMethods {
+
+        #region Get Workbook
 
         public static Workbook Workbook(this Window window) {
             Requires.NotNull(window, nameof(window));
@@ -19,7 +21,11 @@ namespace ExcelBrowser.Interop {
             Requires.NotNull(chart, nameof(chart));
             return chart.Parent as Workbook;
         }
-        
+
+        #endregion
+
+        #region IsVisible
+
         public static bool IsVisible(this Workbook book) {
             Requires.NotNull(book, nameof(book));
             return book.Windows.OfType<Window>()
@@ -36,6 +42,10 @@ namespace ExcelBrowser.Interop {
             Requires.NotNull(chart, nameof(chart));
             return chart.Visible == XlSheetVisibility.xlSheetVisible;
         }
+
+        #endregion
+
+        #region IsActive
 
         public static bool IsActive(this Window window) {
             Requires.NotNull(window, nameof(window));
@@ -57,14 +67,16 @@ namespace ExcelBrowser.Interop {
             return Equals(book, book.Application.ActiveWorkbook);
         }
 
-        public static Session Session(this Application app) {
-            Requires.NotNull(app, nameof(app));
-            return new Session(app.AsProcess().SessionId);
-        }
-
         public static bool IsActive(this Application app) {
             Requires.NotNull(app, nameof(app));
             return Equals(app, app.Session().TopMost);
         }
-    }
+
+        #endregion
+
+        public static Session Session(this Application app) {
+            Requires.NotNull(app, nameof(app));
+            return new Session(app.AsProcess().SessionId);
+        }
+  }
 }
