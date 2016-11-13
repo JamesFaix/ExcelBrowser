@@ -35,19 +35,19 @@ namespace ExcelBrowser.Controller {
         private void DetectorChanged(object sender, EventArgs<ValueChange<SessionToken>> e) {
             Debug.WriteLine($"{nameof(SessionMonitor)}.{nameof(DetectorChanged)}");
             var change = e.Value;
-            var modelChanges = SessionChangeAnalyzer.FindChanges(change);
+            var modelChanges = ChangeAnalyzer.FindChanges(change);
             if (modelChanges.Any()) {
                 Session = change.NewValue;
                 OnSessionChanged(modelChanges);
             }
         }
 
-        public event EventHandler<EventArgs<IEnumerable<ModelChange>>> SessionChanged;
+        public event EventHandler<EventArgs<IEnumerable<Change>>> SessionChanged;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnSessionChanged(IEnumerable<ModelChange> changes) {
+        private void OnSessionChanged(IEnumerable<Change> changes) {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SessionSerialized"));
-            SessionChanged?.Invoke(this, new EventArgs<IEnumerable<ModelChange>>(changes));
+            SessionChanged?.Invoke(this, new EventArgs<IEnumerable<Change>>(changes));
         }
 
         public void Dispose() {

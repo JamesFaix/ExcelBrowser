@@ -6,32 +6,32 @@ using System.Runtime.Serialization;
 namespace ExcelBrowser.Model {
 
     /// <summary>
-    /// Represents a snapshot of an Excel window.
+    /// Represents a snapshot of a sheet.
     /// </summary>
     [DataContract]
-    public class WindowToken : Token<WindowId>, IEquatable<WindowToken> {
+    public class SheetToken : Token<SheetId>, IEquatable<SheetToken> {
 
-        internal WindowToken(WindowId id, bool isVisible, WindowState state) 
+        public SheetToken(SheetId id, bool isVisible, int index) 
             : base(id) {
             IsVisible = isVisible;
-            State = state;
+            Index = index;
         }
         
         [DataMember(Order = 2)]
         public bool IsVisible { get; }
 
         [DataMember(Order = 3)]
-        public WindowState State { get; }
+        public int Index { get; }
 
         #region Equality
 
-        public bool Matches(WindowToken other) => base.Equals(other);
+        public bool Matches(SheetToken other) => base.Equals(other);
 
-        public bool Equals(WindowToken other) => base.Equals(other)
+        public bool Equals(SheetToken other) => base.Equals(other)
             && IsVisible == other.IsVisible
-            && State == other.State;
+            && Index == other.Index;
 
-        public override bool Equals(object obj) => Equals(obj as WindowToken);
+        public override bool Equals(object obj) => Equals(obj as SheetToken);
 
         #endregion
 

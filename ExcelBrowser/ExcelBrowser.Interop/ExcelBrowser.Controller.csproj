@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ExcelBrowser</RootNamespace>
-    <AssemblyName>ExcelBrowser.Interop</AssemblyName>
+    <AssemblyName>ExcelBrowser.Controller</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -58,55 +58,25 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\ChangeSet.cs" />
+    <Compile Include="Model\ChangeSet.cs" />
     <Compile Include="Controller\SessionLog.cs" />
-    <Compile Include="Controller\TokenExtensionMethods.cs" />
+    <Compile Include="Model\TokenExtensionMethods.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
-    <Compile Include="Model\ModelChange.cs" />
-    <Compile Include="Model\Ids\AppId.cs" />
-    <Compile Include="Model\Ids\BookId.cs" />
-    <Compile Include="Model\Ids\SessionId.cs" />
-    <Compile Include="Model\Ids\IdExtensionMethods.cs" />
-    <Compile Include="Model\Ids\SheetId.cs" />
-    <Compile Include="Model\Ids\WindowId.cs" />
-    <Compile Include="Controller\SessionChangeAnalyzer.cs" />
+    <Compile Include="Model\IdFactory.cs" />
+    <Compile Include="Model\ChangeAnalyzer.cs" />
     <Compile Include="Controller\SessionMonitor.cs" />
     <Compile Include="Interop\Session.cs" />
-    <Compile Include="Model\ModelChange.Factory.cs" />
-    <Compile Include="Model\Serializer.cs" />
-    <Compile Include="Model\Tokens\AppToken.cs" />
-    <Compile Include="Model\Tokens\BookToken.cs" />
     <Compile Include="Interop\ExcelExtensionMethods.cs" />
-    <Compile Include="Model\Tokens\SessionToken.cs" />
-    <Compile Include="Model\Tokens\SheetToken.cs" />
-    <Compile Include="Model\Tokens\Token.cs" />
-    <Compile Include="Model\Tokens\TokenFactory.cs" />
-    <Compile Include="Model\WindowState.cs" />
-    <Compile Include="Model\Tokens\WindowToken.cs" />
+    <Compile Include="Model\TokenFactory.cs" />
     <Compile Include="Interop\AppFactory.cs" />
     <Compile Include="Interop\ProcessExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Monitoring\ChangeDetector.cs" />
-    <Compile Include="Utilities\EnumerableExtensionMethods.cs" />
-    <Compile Include="Utilities\EventArgs.cs" />
-    <Compile Include="Utilities\Fallible.cs" />
-    <Compile Include="Monitoring\Fetcher.cs" />
-    <Compile Include="Monitoring\FetchStatus.cs" />
-    <Compile Include="Utilities\FallibleExtensionMethods.cs" />
-    <Compile Include="Utilities\Requires.cs" />
-    <Compile Include="Monitoring\ValueChange.cs" />
-    <Compile Include="Monitoring\ValueChecker.cs" />
-    <Compile Include="Utilities\StringExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Model\Model.cd" />
-    <None Include="Monitoring\Monitoring.cd" />
     <None Include="packages.config" />
     <None Include="Interop\Interop.cd" />
   </ItemGroup>
@@ -129,6 +99,16 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelBrowser.Model\ExcelBrowser.Model.csproj">
+      <Project>{253501ee-c444-4e5b-912f-7b43e1abee5f}</Project>
+      <Name>ExcelBrowser.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExcelBrowser.Utilities\ExcelBrowser.Utilities.csproj">
+      <Project>{a7c6e535-e181-405d-9c6f-a34d74698eb7}</Project>
+      <Name>ExcelBrowser.Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

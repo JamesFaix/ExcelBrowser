@@ -16,7 +16,7 @@ namespace TestApp {
             Console.Read();
         }
 
-        private static void SessionChanged(object sender, EventArgs<IEnumerable<ModelChange>> e) {
+        private static void SessionChanged(object sender, EventArgs<IEnumerable<Change>> e) {
             foreach (var change in e.Value) {
                 Console.WriteLine(change);
             }

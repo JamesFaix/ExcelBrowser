@@ -14,7 +14,7 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class AppToken : Token<AppId> {
 
-        internal AppToken(AppId id, bool isVisible, 
+        public AppToken(AppId id, bool isVisible, 
             IEnumerable<BookToken> books, BookId activeBookId, WindowId activeWindowId) 
             : base(id) {
             Requires.NotNull(books, nameof(books));

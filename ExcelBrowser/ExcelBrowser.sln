@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser", "ExcelBrowser\ExcelBrowser.csproj", "{FEEFFF87-1F89-44F1-8E9F-AD78E9E9EA9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.View", "ExcelBrowser\ExcelBrowser.View.csproj", "{FEEFFF87-1F89-44F1-8E9F-AD78E9E9EA9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Test", "ExcelBrowser.Test\ExcelBrowser.Test.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Interop", "ExcelBrowser.Interop\ExcelBrowser.Interop.csproj", "{0C7EDC69-0382-416D-BE94-8ABF86CAE515}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Controller", "ExcelBrowser.Interop\ExcelBrowser.Controller.csproj", "{0C7EDC69-0382-416D-BE94-8ABF86CAE515}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{DA3E11D7-33D7-4B3A-8E39-B4647CAB97D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Model", "ExcelBrowser.Model\ExcelBrowser.Model.csproj", "{253501EE-C444-4E5B-912F-7B43E1ABEE5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Utilities", "ExcelBrowser.Utilities\ExcelBrowser.Utilities.csproj", "{A7C6E535-E181-405D-9C6F-A34D74698EB7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test Projects", "Test Projects", "{C7077B61-9FFC-48FA-98A0-E175705FB3F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,8 +47,24 @@ Global
 		{DA3E11D7-33D7-4B3A-8E39-B4647CAB97D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA3E11D7-33D7-4B3A-8E39-B4647CAB97D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA3E11D7-33D7-4B3A-8E39-B4647CAB97D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{253501EE-C444-4E5B-912F-7B43E1ABEE5F}.Analysis|Any CPU.ActiveCfg = Release|Any CPU
+		{253501EE-C444-4E5B-912F-7B43E1ABEE5F}.Analysis|Any CPU.Build.0 = Release|Any CPU
+		{253501EE-C444-4E5B-912F-7B43E1ABEE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{253501EE-C444-4E5B-912F-7B43E1ABEE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{253501EE-C444-4E5B-912F-7B43E1ABEE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{253501EE-C444-4E5B-912F-7B43E1ABEE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7C6E535-E181-405D-9C6F-A34D74698EB7}.Analysis|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C6E535-E181-405D-9C6F-A34D74698EB7}.Analysis|Any CPU.Build.0 = Release|Any CPU
+		{A7C6E535-E181-405D-9C6F-A34D74698EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7C6E535-E181-405D-9C6F-A34D74698EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7C6E535-E181-405D-9C6F-A34D74698EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7C6E535-E181-405D-9C6F-A34D74698EB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8EDF4429-251A-416D-BB68-93F227191BCF} = {C7077B61-9FFC-48FA-98A0-E175705FB3F8}
+		{DA3E11D7-33D7-4B3A-8E39-B4647CAB97D4} = {C7077B61-9FFC-48FA-98A0-E175705FB3F8}
 	EndGlobalSection
 EndGlobal

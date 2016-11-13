@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using ExcelBrowser.Model;
 
-namespace ExcelBrowser.Controller {
+namespace ExcelBrowser.Model {
 
     internal static class TokenExtensionMethods {
 

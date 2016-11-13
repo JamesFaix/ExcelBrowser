@@ -3,9 +3,9 @@
 namespace ExcelBrowser.Model {
 
     [DataContract]
-    public partial class ModelChange {
+    public partial class Change {
 
-        internal ModelChange(string type, object id) {
+        internal Change(string type, object id) {
             Requires.NotNull(type, nameof(type));
             Requires.NotNull(id, nameof(id));
 
@@ -22,8 +22,8 @@ namespace ExcelBrowser.Model {
         public override string ToString() => Serializer.Serialize(this);
     }
 
-    public class ModelChange<TId> : ModelChange {
-        internal ModelChange(string type, TId id)
+    public class Change<TId> : Change {
+        internal Change(string type, TId id)
             : base(type, id) { }
 
         public new TId Id => (TId)base.Id;
@@ -32,8 +32,8 @@ namespace ExcelBrowser.Model {
     }
 
     [DataContract]
-    public class ModelChange<TId, TValue> : ModelChange<TId> {
-        internal ModelChange(string type, TId id, TValue value)
+    public class Change<TId, TValue> : Change<TId> {
+        internal Change(string type, TId id, TValue value)
             : base(type, id) {
             Value = value;
         }

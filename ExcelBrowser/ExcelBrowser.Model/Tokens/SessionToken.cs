@@ -11,7 +11,7 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class SessionToken : Token<SessionId>, IEquatable<SessionToken> {
 
-        internal SessionToken(SessionId id, IEnumerable<AppToken> apps, 
+        public SessionToken(SessionId id, IEnumerable<AppToken> apps, 
             AppId activeAppId, AppId primaryAppId) : base(id) {
             Requires.NotNull(apps, nameof(apps));
 

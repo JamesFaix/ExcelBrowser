@@ -15,7 +15,7 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class BookToken : Token<BookId> {
 
-        internal BookToken(BookId id, bool isVisible, bool isAddIn, 
+        public BookToken(BookId id, bool isVisible, bool isAddIn, 
             IEnumerable<SheetToken> sheets, IEnumerable<WindowToken> windows,
             SheetId activeSheetId) 
             : base(id) {

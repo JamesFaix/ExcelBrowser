@@ -23,7 +23,7 @@ namespace ExcelBrowser.Controller {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void LogSessionChange(object sender, EventArgs<IEnumerable<ModelChange>> e) {
+        private void LogSessionChange(object sender, EventArgs<IEnumerable<Change>> e) {
             foreach (var change in e.Value) {                
                 Text += Format(change);
             }
@@ -34,7 +34,7 @@ namespace ExcelBrowser.Controller {
         private static Regex largeSpaces = new Regex(@"[\r\t\n]", RegexOptions.Compiled);
         private static Regex multipleSpaces = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
-        private string Format(ModelChange change) =>
+        private string Format(Change change) =>
             DateTime.Now.ToString(dateFormat) + " " +
             change.ToString()
             .Replace(largeSpaces)

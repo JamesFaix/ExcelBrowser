@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using xlApp = Microsoft.Office.Interop.Excel.Application;
+﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using xlApp = Microsoft.Office.Interop.Excel.Application;
 
 namespace ExcelBrowser.Interop {
 
@@ -12,7 +11,7 @@ namespace ExcelBrowser.Interop {
         /// </summary>
         /// <param name="app">The application.</param>
         public static Process AsProcess(this xlApp app) {
-            if (app == null) throw new ArgumentNullException(nameof(app));
+            Requires.NotNull(app, nameof(app));
 
             var mainWindowHandle = app.Hwnd;
             var processId = NativeMethods.ProcessIdFromWindowHandle(mainWindowHandle);
@@ -26,10 +25,9 @@ namespace ExcelBrowser.Interop {
         /// </summary>
         /// <param name="process">The process.</param>
         public static xlApp AsExcelApp(this Process process) {
-            if (process == null) throw new ArgumentNullException(nameof(process));
+            Requires.NotNull(process, nameof(process));
 
             var handle = process.MainWindowHandle.ToInt32();
-
             var result = FromMainWindowHandle(handle);
             //Debug.Assert(result != null);
             return result;

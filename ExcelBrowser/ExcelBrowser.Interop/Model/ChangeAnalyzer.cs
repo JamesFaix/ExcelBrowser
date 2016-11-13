@@ -1,28 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using ExcelBrowser.Model;
 using ExcelBrowser.Monitoring;
 using MoreLinq;
 
-namespace ExcelBrowser.Controller {
+namespace ExcelBrowser.Model {
 
-    public static class SessionChangeAnalyzer {
+    internal static class ChangeAnalyzer {
 
-        public static IEnumerable<ModelChange> FindChanges(ValueChange<SessionToken> sessionChange) {
+        public static IEnumerable<Change> FindChanges(ValueChange<SessionToken> sessionChange) {
             Requires.NotNull(sessionChange, nameof(sessionChange));
             // Debug.WriteLine("SessionChangeAnalayzer.FindChanges");
 
             //Check for new session
             if (sessionChange.OldValue == null) {
-                return ImmutableArray.Create(ModelChange.SessionStart(sessionChange.NewValue.Id));
+                return ImmutableArray.Create(Change.SessionStart(sessionChange.NewValue.Id));
             }
             else {
                 return GetSessionChanges(sessionChange).ToImmutableArray();
             }
         }
 
-        private static IEnumerable<ModelChange> GetSessionChanges(ValueChange<SessionToken> diff) {
+        private static IEnumerable<Change> GetSessionChanges(ValueChange<SessionToken> diff) {
 
             var ids = new ChangeSet<AppId, AppToken>(diff.Select(session => session.Apps));
 
@@ -33,35 +32,35 @@ namespace ExcelBrowser.Controller {
             if (diff.IsChanged(session => session.ActiveApp?.Id)) {
                 var app = diff.NewValue.ActiveApp;
                 if (app != null) {
-                    result = result.Concat(ModelChange.Activated(app.Id));
+                    result = result.Concat(Change.Activated(app.Id));
                 }
             }
             return result;
         }
 
-        private static IEnumerable<ModelChange> GetAppChanges(ValueChange<AppToken> diff) {
+        private static IEnumerable<Change> GetAppChanges(ValueChange<AppToken> diff) {
 
             var ids = new ChangeSet<BookId, BookToken>(diff.Select(app => app.Books));
 
-            var result = Enumerable.Empty<ModelChange>();
+            var result = Enumerable.Empty<Change>();
 
             if (diff.IsChanged(app => app.IsVisible))
-                result = result.Concat(ModelChange.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible));
+                result = result.Concat(Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible));
 
             result = result.Concat(ids.RemovedChanges)
                 .Concat(ids.AddedChanges)
                 .Concat(ids.NestedChanges(GetBookChanges));
 
             if (diff.IsChanged(app => app.ActiveBook?.Id))
-                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveBook.Id));
+                result = result.Concat(Change.Activated(diff.NewValue.ActiveBook.Id));
 
             if (diff.IsChanged(app => app.ActiveWindow?.Id))
-                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveWindow.Id));
+                result = result.Concat(Change.Activated(diff.NewValue.ActiveWindow.Id));
 
             return result;
         }
 
-        private static IEnumerable<ModelChange> GetBookChanges(ValueChange<BookToken> diff) {
+        private static IEnumerable<Change> GetBookChanges(ValueChange<BookToken> diff) {
             //   Debug.WriteLine($"SessionChangeAnalyzer.GetBookChanges({change})");
 
             //Book visibility changes
@@ -70,13 +69,13 @@ namespace ExcelBrowser.Controller {
                 .Concat(GetBookWindowChanges(diff));
 
             if (diff.IsChanged(book => book.ActiveSheet?.Id)) {
-                result = result.Concat(ModelChange.Activated(diff.NewValue.ActiveSheet.Id));
+                result = result.Concat(Change.Activated(diff.NewValue.ActiveSheet.Id));
             }
 
             return result;
         }
 
-        private static IEnumerable<ModelChange> GetBookSheetChanges(ValueChange<BookToken> diff) {
+        private static IEnumerable<Change> GetBookSheetChanges(ValueChange<BookToken> diff) {
 
             var ids = new ChangeSet<SheetId, SheetToken>(diff.Select(book => book.Sheets));
 
@@ -87,14 +86,14 @@ namespace ExcelBrowser.Controller {
             return result;
         }
 
-        private static IEnumerable<ModelChange> GetSingleSheetChanges(ValueChange<SheetToken> diff) {
+        private static IEnumerable<Change> GetSingleSheetChanges(ValueChange<SheetToken> diff) {
             if (diff.IsChanged(s => s.IsVisible))
-                yield return ModelChange.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
+                yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
             if (diff.IsChanged(s => s.Index))
-                yield return ModelChange.SheetMove(diff.NewValue.Id, diff.NewValue.Index);
+                yield return Change.SheetMove(diff.NewValue.Id, diff.NewValue.Index);
         }
 
-        private static IEnumerable<ModelChange> GetBookWindowChanges(ValueChange<BookToken> diff) {
+        private static IEnumerable<Change> GetBookWindowChanges(ValueChange<BookToken> diff) {
 
             var ids = new ChangeSet<WindowId, WindowToken>(diff.Select(book => book.Windows));
 
@@ -105,12 +104,12 @@ namespace ExcelBrowser.Controller {
             return result;
         }
 
-        private static IEnumerable<ModelChange> GetSingleWindowChanges(ValueChange<WindowToken> diff) {
+        private static IEnumerable<Change> GetSingleWindowChanges(ValueChange<WindowToken> diff) {
             if (diff.IsChanged(s => s.State))
-                yield return ModelChange.WindowSetState(diff.NewValue.Id, diff.NewValue.State);
+                yield return Change.WindowSetState(diff.NewValue.Id, diff.NewValue.State);
 
             if (diff.IsChanged(s => s.IsVisible))
-                yield return ModelChange.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
+                yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
         }
     }
 }

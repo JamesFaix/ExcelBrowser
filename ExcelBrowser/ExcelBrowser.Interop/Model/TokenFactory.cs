@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using ExcelBrowser.Interop;
 using Microsoft.Office.Interop.Excel;
+using ExcelBrowser.Interop;
 
 namespace ExcelBrowser.Model {
 
-    public class TokenFactory {
+    internal static class TokenFactory {
 
         public static SessionToken Session(Session session) {
             Requires.NotNull(session, nameof(session));
@@ -54,22 +54,28 @@ namespace ExcelBrowser.Model {
             when (x.Message.StartsWith("The message filter indicated that the application is busy.")) {
                 //This means the application is in a state that does not permit COM automation.
                 //Often, this is due to a dialog window or right-click context menu being open.
-                Debug.WriteLine($"Busy @ {app.Id()}");
+                Debug.WriteLine($"Busy @ {IdFactory.App(app)}");
                 isVisible = false;
             }
 
             if (isVisible) {
+                var activeBook = app.ActiveWorkbook;
+                var bookId = activeBook == null ? IdFactory.Book(activeBook) : null;
+
+                var activeWindow = app.ActiveWindow;
+                var windowId = activeWindow == null ? IdFactory.Window(activeWindow) : null;
+
                 return new AppToken(
-                    id: app.Id(),
+                    id: IdFactory.App(app),
                     isVisible: isVisible,
                     books: app.Workbooks.OfType<Workbook>()
                         .Select(Book),
-                    activeBookId: app.ActiveWorkbook?.Id(),
-                    activeWindowId: app.ActiveWindow?.Id());
+                    activeBookId: bookId,
+                    activeWindowId: windowId);
             }
             else {
                 return new AppToken(
-                    id: app.Id(),
+                    id: IdFactory.App(app),
                     isVisible: isVisible,
                     books: new BookToken[0],
                     activeBookId: null,
@@ -89,7 +95,7 @@ namespace ExcelBrowser.Model {
         public static BookToken Book(Workbook book) {
             Requires.NotNull(book, nameof(book));
             return new BookToken(
-                id: book.Id(),
+                id: IdFactory.Book(book),
                 isVisible: book.IsVisible(),
                 isAddIn: book.IsAddin,
                 sheets: book.Sheets.OfType<dynamic>().Select(SheetImpl),
@@ -109,7 +115,7 @@ namespace ExcelBrowser.Model {
 
         private static SheetToken SheetImpl(dynamic obj) {
             return new SheetToken(
-                id: obj.Id(),
+                id: IdFactory.Sheet(obj),
                 isVisible: obj.IsVisible(),
                 index: obj.Index);
         }
@@ -117,10 +123,18 @@ namespace ExcelBrowser.Model {
         public static WindowToken Window(Window win) {
             Requires.NotNull(win, nameof(win));
             return new WindowToken(
-                id: win.Id(),
+                id: IdFactory.Window(win),
                 isVisible: win.Visible,
-                state: win.WindowState.Outer());
+                state: ConvertState(win.WindowState));
         }
 
+        private static WindowState ConvertState(XlWindowState innerState) {
+            switch (innerState) {
+                case XlWindowState.xlMaximized: return WindowState.Maximized;
+                case XlWindowState.xlMinimized: return WindowState.Minimized;
+                case XlWindowState.xlNormal: return WindowState.Normal;
+                default: throw Requires.ValidEnum((int)innerState);
+            }
+        }
     }
 }
