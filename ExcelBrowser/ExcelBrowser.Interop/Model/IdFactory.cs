@@ -20,21 +20,20 @@ namespace ExcelBrowser.Model {
 
         public static SheetId Sheet(Worksheet sheet) {
             Requires.NotNull(sheet, nameof(sheet));
-            return SheetImpl(sheet);
+            return new SheetId(
+                processId: sheet.Application.AsProcess().Id,
+                bookName: sheet.Workbook().Name,
+                sheetName: sheet.Name);
         }
 
         public static SheetId Sheet(Chart chart) {
             Requires.NotNull(chart, nameof(chart));
-            return SheetImpl(chart);
-        }
-
-        internal static SheetId SheetImpl(dynamic obj) {
             return new SheetId(
-                processId: obj.Application.AsProcess().Id,
-                bookName: obj.Workbook().Name,
-                sheetName: obj.Name);
+                processId: chart.Application.AsProcess().Id,
+                bookName: chart.Workbook().Name,
+                sheetName: chart.Name);
         }
-        
+                
         public static WindowId Window(Window window) {
             Requires.NotNull(window, nameof(window));
             return new WindowId(

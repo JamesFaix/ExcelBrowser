@@ -11,16 +11,21 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class SheetToken : Token<SheetId>, IEquatable<SheetToken> {
 
-        public SheetToken(SheetId id, bool isVisible, int index) 
+        public SheetToken(SheetId id, bool isActive, bool isVisible, int index) 
             : base(id) {
+
+            IsActive = isActive;
             IsVisible = isVisible;
             Index = index;
         }
         
         [DataMember(Order = 2)]
-        public bool IsVisible { get; }
+        public bool IsActive { get; }
 
         [DataMember(Order = 3)]
+        public bool IsVisible { get; }
+
+        [DataMember(Order = 4)]
         public int Index { get; }
 
         #region Equality
@@ -28,6 +33,7 @@ namespace ExcelBrowser.Model {
         public bool Matches(SheetToken other) => base.Equals(other);
 
         public bool Equals(SheetToken other) => base.Equals(other)
+            && IsActive == other.IsActive
             && IsVisible == other.IsVisible
             && Index == other.Index;
 

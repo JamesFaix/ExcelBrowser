@@ -11,48 +11,27 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class SessionToken : Token<SessionId>, IEquatable<SessionToken> {
 
-        public SessionToken(SessionId id, IEnumerable<AppToken> apps, 
-            AppId activeAppId, AppId primaryAppId) : base(id) {
+        public SessionToken(SessionId id, IEnumerable<AppToken> apps, AppId primaryAppId) 
+            : base(id) {
             Requires.NotNull(apps, nameof(apps));
+            Requires.Rule(primaryAppId == null || apps.Select(a => a.Id).Contains(primaryAppId),
+                "PrimaryApp ID must be null or belong to one of the given apps.");
 
             Apps = apps.ToImmutableArray();
-
-            if (activeAppId != null) {
-                try {
-                    ActiveApp = Apps.Single(a => Equals(a.Id, activeAppId));
-                }
-                catch (InvalidOperationException x)
-                when (x.Message.StartsWith("Sequence contains no elements")) {
-                    throw new InvalidOperationException("ActiveApp ID not found in apps collection.", x);
-                }
-            }
-
-            if (primaryAppId != null) {
-                try {
-                    PrimaryApp = Apps.Single(a => Equals(a.Id, primaryAppId));
-                }
-                catch (InvalidOperationException x)
-                when (x.Message.StartsWith("Sequence contains no elements")) {
-                    throw new InvalidOperationException("PrimaryApp ID not found in apps collection.", x);
-                }
-            }
+            PrimaryAppId = primaryAppId;
         }
         
         [DataMember(Order = 2)]
         public IEnumerable<AppToken> Apps { get; }
 
         [DataMember(Order = 3)]
-        public AppToken ActiveApp { get; }
-
-        [DataMember(Order = 4)]
-        public AppToken PrimaryApp { get; }
+        public AppId PrimaryAppId { get; }
 
         #region Equality
 
         public bool Equals(SessionToken other) => base.Equals(other)
             && Apps.SequenceEqual(other.Apps)
-            && Equals(ActiveApp, other.ActiveApp)
-            && Equals(PrimaryApp, other.PrimaryApp);
+            && Equals(PrimaryAppId, other.PrimaryAppId);
 
         public override bool Equals(object obj) => Equals(obj as SessionToken);
 

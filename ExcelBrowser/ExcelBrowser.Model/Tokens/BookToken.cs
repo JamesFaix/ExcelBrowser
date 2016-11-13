@@ -15,40 +15,30 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class BookToken : Token<BookId> {
 
-        public BookToken(BookId id, bool isVisible, bool isAddIn, 
-            IEnumerable<SheetToken> sheets, IEnumerable<WindowToken> windows,
-            SheetId activeSheetId) 
+        public BookToken(BookId id, bool isActive, bool isVisible, bool isAddIn, 
+            IEnumerable<SheetToken> sheets, IEnumerable<WindowToken> windows) 
             : base(id) {
             Requires.NotNull(sheets, nameof(sheets));
             Requires.NotNull(windows, nameof(windows));
 
+            IsActive = isActive;
             IsVisible = isVisible;
             IsAddIn = isAddIn;
             Sheets = sheets.ToImmutableArray();
             Windows = windows.ToImmutableArray();
-
-            if (activeSheetId != null) {
-                try {
-                    ActiveSheet = Sheets.Single(s => Equals(s.Id, activeSheetId));
-                }
-                catch (InvalidOperationException x)
-                when (x.Message.StartsWith("Sequence contains no elements")) {
-                    throw new InvalidOperationException("ActiveSheet ID not found in sheets collection.", x);
-                }
-            }
         }
         
         [DataMember(Order = 2)]
-        public bool IsVisible { get; }
+        public bool IsActive { get; }
 
         [DataMember(Order = 3)]
-        public bool IsAddIn { get; }
+        public bool IsVisible { get; }
 
         [DataMember(Order = 4)]
-        public IEnumerable<SheetToken> Sheets { get; }
+        public bool IsAddIn { get; }
 
         [DataMember(Order = 5)]
-        public SheetToken ActiveSheet { get; }
+        public IEnumerable<SheetToken> Sheets { get; }
 
         [DataMember(Order = 6)]
         public IEnumerable<WindowToken> Windows { get; }
@@ -58,7 +48,7 @@ namespace ExcelBrowser.Model {
         public bool Equals(BookToken other) => base.Equals(other)
             && Sheets.SequenceEqual(other.Sheets)
             && Windows.SequenceEqual(other.Windows)
-            && Equals(ActiveSheet, other.ActiveSheet)
+            && IsActive == other.IsActive
             && IsVisible == other.IsVisible
             && IsAddIn == other.IsAddIn;
 

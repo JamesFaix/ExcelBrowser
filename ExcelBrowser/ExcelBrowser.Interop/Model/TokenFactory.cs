@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using Microsoft.Office.Interop.Excel;
 using ExcelBrowser.Interop;
+using System;
 
 namespace ExcelBrowser.Model {
 
@@ -37,7 +38,6 @@ namespace ExcelBrowser.Model {
             return new SessionToken(
                 id: new SessionId(session.SessionId),
                 apps: apps,
-                activeAppId: activeAppId,
                 primaryAppId: primaryAppId);
         }
 
@@ -58,72 +58,67 @@ namespace ExcelBrowser.Model {
                 isVisible = false;
             }
 
-            if (isVisible) {
-                var activeBook = app.ActiveWorkbook;
-                var bookId = activeBook == null ? IdFactory.Book(activeBook) : null;
-
-                var activeWindow = app.ActiveWindow;
-                var windowId = activeWindow == null ? IdFactory.Window(activeWindow) : null;
-
-                return new AppToken(
-                    id: IdFactory.App(app),
-                    isVisible: isVisible,
-                    books: app.Workbooks.OfType<Workbook>()
-                        .Select(Book),
-                    activeBookId: bookId,
-                    activeWindowId: windowId);
-            }
-            else {
-                return new AppToken(
-                    id: IdFactory.App(app),
-                    isVisible: isVisible,
-                    books: new BookToken[0],
-                    activeBookId: null,
-                    activeWindowId: null);
-            }
+            return new AppToken(
+                id: IdFactory.App(app),
+                isActive: app.IsActive(),
+                isVisible: isVisible,
+                books: isVisible
+                    ? app.Workbooks.OfType<Workbook>().Select(Book)
+                    : new BookToken[0]);
         }
 
         public static AppToken UnreachableApp(int processId) {
             return new AppToken(
                 id: new AppId(processId),
+                isActive: false,
                 isVisible: false,
-                books: new BookToken[0],
-                activeBookId: null,
-                activeWindowId: null);
+                books: new BookToken[0]);
         }
 
         public static BookToken Book(Workbook book) {
             Requires.NotNull(book, nameof(book));
             return new BookToken(
                 id: IdFactory.Book(book),
+                isActive: book.IsActive(),
                 isVisible: book.IsVisible(),
                 isAddIn: book.IsAddin,
-                sheets: book.Sheets.OfType<dynamic>().Select(SheetImpl),
-                windows: book.Windows.OfType<Window>().Select(Window),
-                activeSheetId: book.ActiveSheet?.Id());
+                sheets: book.Sheets.OfType<object>().Select(Sheet),
+                windows: book.Windows.OfType<Window>().Select(Window));
+        }
+
+        private static SheetToken Sheet(object obj) {
+            var sheet = obj as Worksheet;
+            if (obj != null) return Sheet(sheet);
+
+            var chart = obj as Chart;
+            if (obj != null) return Sheet(chart);
+
+            throw new NotSupportedException("Invalid sheet type.");
         }
 
         public static SheetToken Sheet(Worksheet sheet) {
             Requires.NotNull(sheet, nameof(sheet));
-            return Sheet(sheet);
+            return new SheetToken(
+                id: IdFactory.Sheet(sheet),
+                isActive: sheet.IsActive(),
+                isVisible: sheet.IsVisible(),
+                index: sheet.Index);
         }
 
         public static SheetToken Sheet(Chart chart) {
             Requires.NotNull(chart, nameof(chart));
-            return Sheet(chart);
-        }
-
-        private static SheetToken SheetImpl(dynamic obj) {
             return new SheetToken(
-                id: IdFactory.Sheet(obj),
-                isVisible: obj.IsVisible(),
-                index: obj.Index);
+                id: IdFactory.Sheet(chart),
+                isActive: chart.IsActive(),
+                isVisible: chart.IsVisible(),
+                index: chart.Index);
         }
-
+        
         public static WindowToken Window(Window win) {
             Requires.NotNull(win, nameof(win));
             return new WindowToken(
                 id: IdFactory.Window(win),
+                isActive: win.IsActive(),
                 isVisible: win.Visible,
                 state: ConvertState(win.WindowState));
         }

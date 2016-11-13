@@ -22,20 +22,11 @@ namespace ExcelBrowser.Model {
         }
 
         private static IEnumerable<Change> GetSessionChanges(ValueChange<SessionToken> diff) {
-
             var ids = new ChangeSet<AppId, AppToken>(diff.Select(session => session.Apps));
 
-            var result = ids.RemovedChanges
-                .Concat(ids.AddedChanges)
-                .Concat(ids.NestedChanges(GetAppChanges));
-
-            if (diff.IsChanged(session => session.ActiveApp?.Id)) {
-                var app = diff.NewValue.ActiveApp;
-                if (app != null) {
-                    result = result.Concat(Change.Activated(app.Id));
-                }
-            }
-            return result;
+            return ids.RemovedChanges
+                 .Concat(ids.AddedChanges)
+                 .Concat(ids.NestedChanges(GetAppChanges));
         }
 
         private static IEnumerable<Change> GetAppChanges(ValueChange<AppToken> diff) {
@@ -44,6 +35,9 @@ namespace ExcelBrowser.Model {
 
             var result = Enumerable.Empty<Change>();
 
+            if (diff.IsChanged(app => app.IsActive))
+                result = result.Concat(Change.SetActive(diff.NewValue.Id, diff.NewValue.IsActive));
+
             if (diff.IsChanged(app => app.IsVisible))
                 result = result.Concat(Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible));
 
@@ -51,60 +45,57 @@ namespace ExcelBrowser.Model {
                 .Concat(ids.AddedChanges)
                 .Concat(ids.NestedChanges(GetBookChanges));
 
-            if (diff.IsChanged(app => app.ActiveBook?.Id))
-                result = result.Concat(Change.Activated(diff.NewValue.ActiveBook.Id));
-
-            if (diff.IsChanged(app => app.ActiveWindow?.Id))
-                result = result.Concat(Change.Activated(diff.NewValue.ActiveWindow.Id));
-
             return result;
         }
 
         private static IEnumerable<Change> GetBookChanges(ValueChange<BookToken> diff) {
             //   Debug.WriteLine($"SessionChangeAnalyzer.GetBookChanges({change})");
 
-            //Book visibility changes
+            var result = Enumerable.Empty<Change>();
 
-            var result = GetBookSheetChanges(diff)
-                .Concat(GetBookWindowChanges(diff));
+            if (diff.IsChanged(b => b.IsActive))
+                result = result.Concat(Change.SetActive(diff.NewValue.Id, diff.NewValue.IsActive));
 
-            if (diff.IsChanged(book => book.ActiveSheet?.Id)) {
-                result = result.Concat(Change.Activated(diff.NewValue.ActiveSheet.Id));
-            }
+            if (diff.IsChanged(b => b.IsVisible))
+                result = result.Concat(Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible));
+
+            result = result.Concat(GetSheetCollectionChanges(diff)
+                .Concat(GetWindowCollectionChanges(diff)));
 
             return result;
         }
 
-        private static IEnumerable<Change> GetBookSheetChanges(ValueChange<BookToken> diff) {
-
+        private static IEnumerable<Change> GetSheetCollectionChanges(ValueChange<BookToken> diff) {
             var ids = new ChangeSet<SheetId, SheetToken>(diff.Select(book => book.Sheets));
 
-            var result = ids.RemovedChanges
+            return ids.RemovedChanges
                 .Concat(ids.AddedChanges)
-                .Concat(ids.NestedChanges(GetSingleSheetChanges));
-
-            return result;
+                .Concat(ids.NestedChanges(GetSheetChanges));
         }
 
-        private static IEnumerable<Change> GetSingleSheetChanges(ValueChange<SheetToken> diff) {
+        private static IEnumerable<Change> GetSheetChanges(ValueChange<SheetToken> diff) {
+            if (diff.IsChanged(s => s.IsActive))
+                yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsActive);
+
             if (diff.IsChanged(s => s.IsVisible))
                 yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
+
             if (diff.IsChanged(s => s.Index))
                 yield return Change.SheetMove(diff.NewValue.Id, diff.NewValue.Index);
         }
 
-        private static IEnumerable<Change> GetBookWindowChanges(ValueChange<BookToken> diff) {
-
+        private static IEnumerable<Change> GetWindowCollectionChanges(ValueChange<BookToken> diff) {
             var ids = new ChangeSet<WindowId, WindowToken>(diff.Select(book => book.Windows));
 
-            var result = ids.RemovedChanges
+            return ids.RemovedChanges
                 .Concat(ids.AddedChanges)
-                .Concat(ids.NestedChanges(GetSingleWindowChanges));
-
-            return result;
+                .Concat(ids.NestedChanges(GetWindowChanges));
         }
 
-        private static IEnumerable<Change> GetSingleWindowChanges(ValueChange<WindowToken> diff) {
+        private static IEnumerable<Change> GetWindowChanges(ValueChange<WindowToken> diff) {
+            if (diff.IsChanged(s => s.IsActive))
+                yield return Change.SetActive(diff.NewValue.Id, diff.NewValue.IsActive);
+
             if (diff.IsChanged(s => s.State))
                 yield return Change.WindowSetState(diff.NewValue.Id, diff.NewValue.State);
 

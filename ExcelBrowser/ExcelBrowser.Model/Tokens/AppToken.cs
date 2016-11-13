@@ -14,56 +14,31 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class AppToken : Token<AppId> {
 
-        public AppToken(AppId id, bool isVisible, 
-            IEnumerable<BookToken> books, BookId activeBookId, WindowId activeWindowId) 
+        public AppToken(AppId id, bool isActive, bool isVisible, 
+            IEnumerable<BookToken> books) 
             : base(id) {
             Requires.NotNull(books, nameof(books));
 
+            IsActive = isActive;
             IsVisible = isVisible;
-            Books = books.ToImmutableArray();
-
-            if (activeBookId != null) {
-                try {
-                    ActiveBook = Books.Single(b => Equals(b.Id, activeBookId));
-                }
-                catch (InvalidOperationException x)
-                when (x.Message.StartsWith("Sequence contains no elements")) {
-                    throw new InvalidOperationException("ActiveBook ID not found in books collection.", x);
-                }
-            }
-
-            if (activeWindowId != null) {
-                try {
-                    ActiveWindow = Books
-                        .SelectMany(b => b.Windows)
-                        .Single(w => Equals(w.Id, activeWindowId));
-                }
-                catch (InvalidOperationException x)
-                when (x.Message.StartsWith("Sequence contains no elements")) {
-                    throw new InvalidOperationException("ActiveWindow ID not found in windows collection.", x);
-                }
-            }
+            Books = books.ToImmutableArray();            
         }
         
         [DataMember(Order = 2)]
+        public bool IsActive { get; }
+
+        [DataMember(Order = 3)]
         public bool IsVisible { get; }
 
         [DataMember(Order = 3)]
         public IEnumerable<BookToken> Books { get; private set; }
 
-        [DataMember(Order = 4)]
-        public BookToken ActiveBook { get; }
-
-        [DataMember(Order = 5)]
-        public WindowToken ActiveWindow { get; }
-
         #region Equality
 
         public bool Equals(AppToken other) => base.Equals(other)
+            && IsActive == other.IsActive
             && IsVisible == other.IsVisible
-            && Books.SequenceEqual(other.Books)
-            && Equals(ActiveBook, other.ActiveBook)
-            && Equals(ActiveWindow, other.ActiveWindow);
+            && Books.SequenceEqual(other.Books);
 
         public override bool Equals(object obj) => Equals(obj as AppToken);
 

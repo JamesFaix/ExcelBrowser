@@ -11,16 +11,20 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class WindowToken : Token<WindowId>, IEquatable<WindowToken> {
 
-        public WindowToken(WindowId id, bool isVisible, WindowState state) 
+        public WindowToken(WindowId id, bool isActive, bool isVisible, WindowState state) 
             : base(id) {
+            IsActive = isActive;
             IsVisible = isVisible;
             State = state;
         }
         
         [DataMember(Order = 2)]
-        public bool IsVisible { get; }
+        public bool IsActive { get; }
 
         [DataMember(Order = 3)]
+        public bool IsVisible { get; }
+
+        [DataMember(Order = 4)]
         public WindowState State { get; }
 
         #region Equality
@@ -28,6 +32,7 @@ namespace ExcelBrowser.Model {
         public bool Matches(WindowToken other) => base.Equals(other);
 
         public bool Equals(WindowToken other) => base.Equals(other)
+            && IsActive == other.IsActive
             && IsVisible == other.IsVisible
             && State == other.State;
 
