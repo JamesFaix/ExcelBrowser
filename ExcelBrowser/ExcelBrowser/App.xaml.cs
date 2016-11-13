@@ -11,7 +11,7 @@ namespace ExcelBrowser {
             base.OnStartup(e);
 
             var monitor = new SessionMonitor();
-            var window = new UI.DebugWindow(monitor);
+            var window = new View.DebugWindow(monitor);
 
             window.Show();
         }

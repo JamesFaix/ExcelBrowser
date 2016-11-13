@@ -2,7 +2,7 @@
 using System.Windows;
 using ExcelBrowser.Controller;
 
-namespace ExcelBrowser.UI {
+namespace ExcelBrowser.View {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
