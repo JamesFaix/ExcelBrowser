@@ -10,8 +10,8 @@ namespace TestApp {
     class Program {
         static void Main(string[] args) {
 
-            var updater = new SessionUpdater(refreshSeconds: 2);
-            updater.Changed += SessionChanged;
+            var updater = new SessionMonitor(refreshSeconds: 2);
+            updater.SessionChanged += SessionChanged;
 
             Console.Read();
         }

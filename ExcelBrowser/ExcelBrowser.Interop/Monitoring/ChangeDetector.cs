@@ -44,7 +44,7 @@ namespace ExcelBrowser.Monitoring {
                     OnChanged(new ValueChange<T>(oldPrevious, currentValue));
                 }
                 else {
-                    Debug.Print("ChangeDetector: No change");
+                  //  Debug.Print("ChangeDetector: No change");
                 }
             }
             else {

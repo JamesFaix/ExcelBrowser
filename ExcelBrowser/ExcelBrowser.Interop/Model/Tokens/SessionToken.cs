@@ -15,7 +15,7 @@ namespace ExcelBrowser.Model {
 
         public SessionToken(Session session)
             : base(new SessionId(session.SessionId)) {
-            Debug.WriteLine("SessionToken.Constructor");
+          //  Debug.WriteLine("SessionToken.Constructor");
 
             var reachableApps = session.Apps
                 .Select(a => new AppToken(a))

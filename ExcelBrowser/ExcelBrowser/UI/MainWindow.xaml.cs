@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
+using ExcelBrowser.Controller;
+using ExcelBrowser.Model;
+using System.ComponentModel;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ExcelBrowser.UI {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+
         public MainWindow() {
             InitializeComponent();
+
+            this.monitor = new SessionMonitor(refreshSeconds: 0.05);
+            txt_Session.DataContext = monitor;
         }
+
+        private readonly SessionMonitor monitor;
+
+        public TextBlock TextBlock => txt_Session;
     }
 }

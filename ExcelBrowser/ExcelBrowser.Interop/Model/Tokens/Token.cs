@@ -16,7 +16,8 @@ namespace ExcelBrowser.Model {
 
         #region Equality
 
-        public bool Equals(Token<TId> other) => Equals(Id, other.Id);
+        public bool Equals(Token<TId> other) => !Equals(other, null) 
+            && Equals(Id, other.Id);
 
         public override bool Equals(object obj) => Equals(obj as Token<TId>);
 
