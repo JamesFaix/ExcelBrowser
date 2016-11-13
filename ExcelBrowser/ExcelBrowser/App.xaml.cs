@@ -1,10 +1,19 @@
 ﻿using System.Windows;
+using ExcelBrowser.Controller;
 
 namespace ExcelBrowser {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        
+
+        protected override void OnStartup(StartupEventArgs e) {
+            base.OnStartup(e);
+
+            var monitor = new SessionMonitor();
+            var window = new UI.DebugWindow(monitor);
+
+            window.Show();
+        }
     }
 }

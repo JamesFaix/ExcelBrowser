@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using ExcelBrowser.Controller;
-using ExcelBrowser.Model;
 
 namespace ExcelBrowser.UI {
     /// <summary>
@@ -10,18 +8,14 @@ namespace ExcelBrowser.UI {
     /// </summary>
     public partial class MainWindow : Window, IDisposable {
 
-        public MainWindow() {
+        public MainWindow(SessionMonitor monitor) {
+            Requires.NotNull(monitor, nameof(monitor));
             InitializeComponent();
 
-            monitor = new SessionMonitor(refreshSeconds: 0.05);
-            log = new SessionLog(monitor);
-
-            txt_Session.DataContext = monitor;
-            txt_Log.DataContext = log;
+            this.monitor = monitor;            
         }
 
         private readonly SessionMonitor monitor;
-        private readonly SessionLog log;       
 
         public void Dispose() {
             monitor.Dispose();

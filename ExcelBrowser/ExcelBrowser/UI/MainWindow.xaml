@@ -8,29 +8,9 @@
     Title="MainWindow" Height="350" Width="525">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
-        </Grid.ColumnDefinitions>
-
-        <ScrollViewer Grid.Column="0">
-            <TextBlock x:Name="txt_Session" 
-                HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch"
-                TextWrapping="Wrap"
-                Text="{Binding Path=SessionSerialized}"
-                FontFamily="Consolas"
-                />
-        </ScrollViewer>
-
-        <ScrollViewer Grid.Column="1">
-            <TextBlock x:Name="txt_Log" 
-                HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch"
-                TextWrapping="Wrap"
-                Text="{Binding Path=Text}"
-                FontFamily="Consolas"
-                />
+        
+        <ScrollViewer >
+            
         </ScrollViewer>
     </Grid>
 </Window>
