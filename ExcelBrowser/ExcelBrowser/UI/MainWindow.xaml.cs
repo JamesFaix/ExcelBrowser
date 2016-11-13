@@ -8,7 +8,7 @@ namespace ExcelBrowser.UI {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class MainWindow : Window, IDisposable {
 
         public MainWindow() {
             InitializeComponent();
@@ -22,5 +22,9 @@ namespace ExcelBrowser.UI {
 
         private readonly SessionMonitor monitor;
         private readonly SessionLog log;       
+
+        public void Dispose() {
+            monitor.Dispose();
+        }
     }
 }
