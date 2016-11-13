@@ -90,6 +90,8 @@ namespace ExcelBrowser.Controller {
         private static IEnumerable<ModelChange> GetSingleSheetChanges(ValueChange<SheetToken> diff) {
             if (diff.IsChanged(s => s.IsVisible))
                 yield return ModelChange.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
+            if (diff.IsChanged(s => s.Index))
+                yield return ModelChange.SheetMove(diff.NewValue.Id, diff.NewValue.Index);
         }
 
         private static IEnumerable<ModelChange> GetBookWindowChanges(ValueChange<BookToken> diff) {

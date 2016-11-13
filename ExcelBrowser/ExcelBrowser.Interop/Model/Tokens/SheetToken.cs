@@ -16,22 +16,28 @@ namespace ExcelBrowser.Model {
 
         public SheetToken(xlSheet sheet) : base(sheet?.Id()) {
             IsVisible = sheet.IsVisible();
+            Index = sheet.Index;
             //Debug.WriteLine("SheetToken.Constructor");
         }
 
         public SheetToken(xlChart chart) : base(chart?.Id()) {
             IsVisible = chart.IsVisible();
+            Index = chart.Index;
         }
 
-        [DataMember(Order = 1)]
+        [DataMember(Order = 2)]
         public bool IsVisible { get; }
+
+        [DataMember(Order = 3)]
+        public int Index { get; }
 
         #region Equality
 
         public bool Matches(SheetToken other) => base.Equals(other);
 
         public bool Equals(SheetToken other) => base.Equals(other)
-            && IsVisible == other.IsVisible;
+            && IsVisible == other.IsVisible
+            && Index == other.Index;
 
         public override bool Equals(object obj) => Equals(obj as SheetToken);
 

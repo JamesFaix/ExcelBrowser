@@ -1,8 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using ExcelBrowser.Controller;
 using ExcelBrowser.Model;
-using System.ComponentModel;
-using System.Windows.Controls;
 
 namespace ExcelBrowser.UI {
     /// <summary>
@@ -13,12 +13,14 @@ namespace ExcelBrowser.UI {
         public MainWindow() {
             InitializeComponent();
 
-            this.monitor = new SessionMonitor(refreshSeconds: 0.05);
+            monitor = new SessionMonitor(refreshSeconds: 0.05);
+            log = new SessionLog(monitor);
+
             txt_Session.DataContext = monitor;
+            txt_Log.DataContext = log;
         }
 
         private readonly SessionMonitor monitor;
-
-        public TextBlock TextBlock => txt_Session;
+        private readonly SessionLog log;       
     }
 }

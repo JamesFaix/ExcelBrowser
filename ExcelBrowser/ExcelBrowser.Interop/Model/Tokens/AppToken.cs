@@ -60,16 +60,16 @@ namespace ExcelBrowser.Model {
             };
         }
 
-        [DataMember(Order = 1)]
+        [DataMember(Order = 2)]
         public bool IsVisible { get; }
 
-        [DataMember(Order = 2)]
+        [DataMember(Order = 3)]
         public IEnumerable<BookToken> Books { get; private set; }
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 4)]
         public BookToken ActiveBook { get; }
 
-        [DataMember(Order = 4)]
+        [DataMember(Order = 5)]
         public WindowToken ActiveWindow { get; }
 
         #region Equality

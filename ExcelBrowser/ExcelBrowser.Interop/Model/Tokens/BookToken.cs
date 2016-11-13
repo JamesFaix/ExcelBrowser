@@ -40,19 +40,19 @@ namespace ExcelBrowser.Model {
             IsAddIn = book.IsAddin;
         }
 
-        [DataMember(Order = 1)]
+        [DataMember(Order = 2)]
         public bool IsVisible { get; }
 
-        [DataMember(Order = 2)]
+        [DataMember(Order = 3)]
         public bool IsAddIn { get; }
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 4)]
         public IEnumerable<SheetToken> Sheets { get; }
 
-        [DataMember(Order = 4)]
+        [DataMember(Order = 5)]
         public SheetToken ActiveSheet { get; }
 
-        [DataMember(Order = 5)]
+        [DataMember(Order = 6)]
         public IEnumerable<WindowToken> Windows { get; }
 
         #region Equality

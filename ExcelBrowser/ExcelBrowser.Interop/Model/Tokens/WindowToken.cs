@@ -18,10 +18,10 @@ namespace ExcelBrowser.Model {
             IsVisible = window.Visible;
         }
 
-        [DataMember(Order = 1)]
+        [DataMember(Order = 2)]
         public bool IsVisible { get; }
 
-        [DataMember(Order = 2)]
+        [DataMember(Order = 3)]
         public WindowState State { get; }
 
         #region Equality

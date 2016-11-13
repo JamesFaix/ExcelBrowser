@@ -1,5 +1,4 @@
-﻿<Window Name="window" 
-    x:Class="ExcelBrowser.UI.MainWindow"
+﻿<Window x:Class="ExcelBrowser.UI.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,11 +8,29 @@
     Title="MainWindow" Height="350" Width="525">
 
     <Grid>
-        <TextBlock x:Name="txt_Session" 
-            HorizontalAlignment="Stretch" 
-            VerticalAlignment="Stretch"
-            TextWrapping="Wrap"
-            Text="{Binding Path=SessionSerialized}"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer Grid.Column="0">
+            <TextBlock x:Name="txt_Session" 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                TextWrapping="Wrap"
+                Text="{Binding Path=SessionSerialized}"
+                FontFamily="Consolas"
                 />
+        </ScrollViewer>
+
+        <ScrollViewer Grid.Column="1">
+            <TextBlock x:Name="txt_Log" 
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch"
+                TextWrapping="Wrap"
+                Text="{Binding Path=Text}"
+                FontFamily="Consolas"
+                />
+        </ScrollViewer>
     </Grid>
 </Window>

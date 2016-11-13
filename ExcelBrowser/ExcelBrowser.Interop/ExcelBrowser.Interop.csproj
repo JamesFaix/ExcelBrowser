@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\ChangeSet.cs" />
+    <Compile Include="Controller\SessionLog.cs" />
     <Compile Include="Controller\TokenExtensionMethods.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Model\ModelChange.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Utilities\Requires.cs" />
     <Compile Include="Monitoring\ValueChange.cs" />
     <Compile Include="Monitoring\ValueChecker.cs" />
+    <Compile Include="Utilities\StringExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

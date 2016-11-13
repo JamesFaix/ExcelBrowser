@@ -8,6 +8,7 @@
         private const string ACTIVATE = "Activated";
         private const string VISIBLE = "Visible";
         private const string STATE = "State";
+        private const string MOVE = "Move";
 
         public static ModelChange Added<TId>(TId id) =>
             new ModelChange<TId>(ADD, id);
@@ -26,5 +27,8 @@
 
         public static ModelChange WindowSetState(WindowId id, WindowState value) =>
             new ModelChange<WindowId, WindowState>(STATE, id, value);
+
+        public static ModelChange SheetMove(SheetId id, int index) =>
+            new ModelChange<SheetId, int>(MOVE, id, index);
     }
 }
