@@ -11,11 +11,13 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class WindowToken : Token<WindowId>, IEquatable<WindowToken> {
 
-        public WindowToken(WindowId id, bool isActive, bool isVisible, WindowState state) 
+        public WindowToken(WindowId id, bool isActive, bool isVisible, 
+            WindowState state, SheetId activeSheetId) 
             : base(id) {
             IsActive = isActive;
             IsVisible = isVisible;
             State = state;
+            ActiveSheetId = activeSheetId;
         }
         
         [DataMember(Order = 2)]
@@ -27,6 +29,9 @@ namespace ExcelBrowser.Model {
         [DataMember(Order = 4)]
         public WindowState State { get; }
 
+        [DataMember(Order = 5)]
+        public SheetId ActiveSheetId { get; }
+
         #region Equality
 
         public bool Matches(WindowToken other) => base.Equals(other);
@@ -34,7 +39,8 @@ namespace ExcelBrowser.Model {
         public bool Equals(WindowToken other) => base.Equals(other)
             && IsActive == other.IsActive
             && IsVisible == other.IsVisible
-            && State == other.State;
+            && State == other.State
+            && Equals(ActiveSheetId, other.ActiveSheetId);
 
         public override bool Equals(object obj) => Equals(obj as WindowToken);
 

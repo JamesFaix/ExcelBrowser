@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using xlApp = Microsoft.Office.Interop.Excel.Application;
+using System;
 
 namespace ExcelBrowser.Interop {
 
@@ -20,8 +21,16 @@ namespace ExcelBrowser.Interop {
             Process.GetProcessesByName("EXCEL")
             .Where(p => p.SessionId == this.SessionId);
 
-        private static Fallible<xlApp> TryGetApp(Process process) =>
-            new Fallible<xlApp>(() => process.AsExcelApp());
+        private static Fallible<xlApp> TryGetApp(Process process) {
+            try {
+                var app = process.AsExcelApp();
+                if (app == null) throw new InvalidOperationException("Cannot get App from Process.");
+                return new Fallible<xlApp>(app);
+            }
+            catch (Exception x) {
+                return new Fallible<xlApp>(x);
+            }
+        }
 
         public int SessionId { get; }
 
@@ -44,10 +53,23 @@ namespace ExcelBrowser.Interop {
 
         public xlApp TopMost {
             get {
-                int? topMostId = Apps.Select(p => p.AsProcess()).TopMost()?.Id;
-                return topMostId.HasValue
-                    ? Apps.Single(a => a.AsProcess().Id == topMostId)
-                    : null;
+                var dict = Apps.ToDictionary(
+                    keySelector: a => a.AsProcess(),
+                    elementSelector: a => a);
+
+                var topProcess = dict.Keys.TopMost();
+
+                if (topProcess == null) {
+                    return null;
+                }
+                else {
+                    try {
+                        return dict[topProcess];
+                    }
+                    catch {
+                        return null;
+                    }
+                }
             }
         }
 

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.Office.Interop.Excel;
+using System.Drawing;
+using System.Runtime.InteropServices;
 
 namespace ExcelBrowser.Interop {
 
@@ -43,6 +45,21 @@ namespace ExcelBrowser.Interop {
             return chart.Visible == XlSheetVisibility.xlSheetVisible;
         }
 
+        public static bool IsVisible(this Application app) {
+            Requires.NotNull(app, nameof(app));
+            
+            try {
+                return app.Visible
+                    && app.AsProcess().IsVisible();
+            }
+            catch (COMException x)
+            when (x.Message.StartsWith("The message filter indicated that the application is busy.")
+                || x.Message.StartsWith("Call was rejected by callee.")) {
+                //This means the application is in a state that does not permit COM automation.
+                //Often, this is due to a dialog window or right-click context menu being open.
+                return false;
+            }
+        }
         #endregion
 
         #region IsActive
@@ -78,5 +95,30 @@ namespace ExcelBrowser.Interop {
             Requires.NotNull(app, nameof(app));
             return new Session(app.AsProcess().SessionId);
         }
-  }
+
+        public static Color TabColor(this Worksheet sheet) {
+            Requires.NotNull(sheet, nameof(sheet));
+
+            var result = sheet.Tab.Color;
+            if (Equals(result, false)) {
+                return Color.Transparent;
+            }
+            else {
+                return ColorTranslator.FromOle(result);
+            }
+        }
+
+        public static Color TabColor(this Chart chart) {
+            Requires.NotNull(chart, nameof(chart));
+
+            var result = chart.Tab.Color;
+            if (Equals(result, false)) {
+                return Color.Transparent;
+            }
+            else {
+                return ColorTranslator.FromOle(result);
+            }
+        }
+
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using System.Drawing;
 
 #pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
@@ -11,12 +12,13 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class SheetToken : Token<SheetId>, IEquatable<SheetToken> {
 
-        public SheetToken(SheetId id, bool isActive, bool isVisible, int index) 
+        public SheetToken(SheetId id, bool isActive, bool isVisible, int index, Color tabColor) 
             : base(id) {
 
             IsActive = isActive;
             IsVisible = isVisible;
             Index = index;
+            TabColor = tabColor;
         }
         
         [DataMember(Order = 2)]
@@ -28,6 +30,9 @@ namespace ExcelBrowser.Model {
         [DataMember(Order = 4)]
         public int Index { get; }
 
+        [DataMember(Order = 5)]
+        public Color TabColor { get; } 
+
         #region Equality
 
         public bool Matches(SheetToken other) => base.Equals(other);
@@ -35,7 +40,8 @@ namespace ExcelBrowser.Model {
         public bool Equals(SheetToken other) => base.Equals(other)
             && IsActive == other.IsActive
             && IsVisible == other.IsVisible
-            && Index == other.Index;
+            && Index == other.Index
+            && TabColor == other.TabColor;
 
         public override bool Equals(object obj) => Equals(obj as SheetToken);
 

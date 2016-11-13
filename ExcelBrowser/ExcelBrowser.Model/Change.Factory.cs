@@ -1,4 +1,6 @@
-﻿namespace ExcelBrowser.Model {
+﻿using System.Drawing;
+
+namespace ExcelBrowser.Model {
 
     partial class Change {
         
@@ -22,5 +24,11 @@
 
         public static Change SheetMove(SheetId id, int index) =>
             new Change<SheetId, int>("SetIndex", id, index);
+
+        public static Change WindowVisibleSheet(WindowId id, SheetId sheetId) =>
+            new Change<WindowId, SheetId>("SetVisibleSheet", id, sheetId);
+
+        public static Change SheetTabColor(SheetId id, Color color) =>
+            new Change<SheetId, Color>("SetTabColor", id, color);        
     }
 }

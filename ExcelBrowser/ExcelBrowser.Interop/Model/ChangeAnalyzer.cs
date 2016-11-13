@@ -35,12 +35,15 @@ namespace ExcelBrowser.Model {
 
             var result = Enumerable.Empty<Change>();
 
+            if (diff.IsChanged(app => app.IsVisible)) {
+                var newValue = diff.NewValue.IsVisible;
+                result = result.Concat(Change.SetVisibility(diff.NewValue.Id, newValue));
+                if (!newValue) return result; //Don't look for other changes if the app just went invisible.
+            }
+
             if (diff.IsChanged(app => app.IsActive))
                 result = result.Concat(Change.SetActive(diff.NewValue.Id, diff.NewValue.IsActive));
-
-            if (diff.IsChanged(app => app.IsVisible))
-                result = result.Concat(Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible));
-
+            
             result = result.Concat(ids.RemovedChanges)
                 .Concat(ids.AddedChanges)
                 .Concat(ids.NestedChanges(GetBookChanges));
@@ -75,13 +78,16 @@ namespace ExcelBrowser.Model {
 
         private static IEnumerable<Change> GetSheetChanges(ValueChange<SheetToken> diff) {
             if (diff.IsChanged(s => s.IsActive))
-                yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsActive);
+                yield return Change.SetActive(diff.NewValue.Id, diff.NewValue.IsActive);
 
             if (diff.IsChanged(s => s.IsVisible))
                 yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
 
             if (diff.IsChanged(s => s.Index))
                 yield return Change.SheetMove(diff.NewValue.Id, diff.NewValue.Index);
+
+            if (diff.IsChanged(s => s.TabColor))
+                yield return Change.SheetTabColor(diff.NewValue.Id, diff.NewValue.TabColor);
         }
 
         private static IEnumerable<Change> GetWindowCollectionChanges(ValueChange<BookToken> diff) {
@@ -101,6 +107,9 @@ namespace ExcelBrowser.Model {
 
             if (diff.IsChanged(s => s.IsVisible))
                 yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
+
+            if (diff.IsChanged(s => s.ActiveSheetId))
+                yield return Change.WindowVisibleSheet(diff.NewValue.Id, diff.NewValue.ActiveSheetId);
         }
     }
 }

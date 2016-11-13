@@ -10,7 +10,7 @@ namespace ExcelBrowser {
         protected override void OnStartup(StartupEventArgs e) {
             base.OnStartup(e);
 
-            var monitor = new SessionMonitor();
+            var monitor = new SessionMonitor(refreshSeconds:1);
             var window = new View.DebugWindow(monitor);
 
             window.Show();

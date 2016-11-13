@@ -1,81 +1,96 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.Excel;
 using ExcelBrowser.Interop;
-using System;
+using Microsoft.Office.Interop.Excel;
 
 namespace ExcelBrowser.Model {
 
-    internal static class TokenFactory {
+    internal class TokenFactory {
 
-        public static SessionToken Session(Session session) {
+        public SessionToken Session(Session session) {
             Requires.NotNull(session, nameof(session));
 
-            var reachableApps = session.Apps
+            IEnumerable<AppToken> reachableApps = session.Apps
                 .Select(App)
                 .OrderBy(at => at.Id);
 
             var unreachableApps = session.UnreachableProcessIds
-                .Select(UnreachableApp)
-                .OrderBy(at => at.Id);
+                .Select(id => InvisibleApp(new AppId(id)))
+                .OrderBy(a => a.Id);
 
-            var apps = reachableApps
-                .Concat(unreachableApps);
+            var apps = ReplaceInvisibleApps(
+                reachableApps.Concat(unreachableApps));
 
-            int? topMostProcessId = session.TopMost?.AsProcess()?.Id;
-            var activeAppId = topMostProcessId.HasValue
-                ? apps.Select(a => a.Id)
-                    .SingleOrDefault(id => id.ProcessId == topMostProcessId)
-                : null;
+            var primary = session.Primary;
+            var primaryId = (primary != null) ? IdFactory.App(primary) : null;
 
-            int? primaryProcessId = session.Primary?.AsProcess()?.Id;
-            var primaryAppId = primaryProcessId.HasValue
-                ? apps.Select(a => a.Id)
-                    .SingleOrDefault(id => id.ProcessId == primaryProcessId)
-                : null;
-
-            return new SessionToken(
+            var result = new SessionToken(
                 id: new SessionId(session.SessionId),
                 apps: apps,
-                primaryAppId: primaryAppId);
+                primaryAppId: primaryId);
+
+            this.previousSession = result;
+            return result;
         }
 
-        public static AppToken App(Application app) {
+        #region Freezing busy apps
+
+        private SessionToken previousSession;
+
+        //Replaces any busy apps that were previously cached with their previous version
+        private IEnumerable<AppToken> ReplaceInvisibleApps(IEnumerable<AppToken> apps) {
+            if (this.previousSession == null) {
+                //Don't do anything special before first snapshot is saved
+                foreach (var a in apps) yield return a;
+            }
+            else {
+                var previousApps = this.previousSession.Apps.ToArray();
+
+                foreach (var a in apps) {
+                    if(a.IsVisible) { //If visible, return input
+                        yield return a;
+                    }
+                    else { //Return previous match, but default to input
+                        var prev = previousApps.SingleOrDefault(p => Equals(p.Id, a.Id));
+                        if (prev != null) { //Mark and return previous match
+                            prev = prev.ShallowCopy;
+                            prev.IsVisible = false;
+                            yield return prev;
+                        }
+                        else { //If no previous match, return input
+                            yield return a;
+                        }
+                    }                    
+                }
+            }
+        }
+
+        #endregion
+
+        private static AppToken App(Application app) {
             Requires.NotNull(app, nameof(app));
 
-            bool isVisible;
-
-            try {
-                isVisible = app.Visible
-                    && app.AsProcess().IsVisible();
-            }
-            catch (COMException x)
-            when (x.Message.StartsWith("The message filter indicated that the application is busy.")) {
-                //This means the application is in a state that does not permit COM automation.
-                //Often, this is due to a dialog window or right-click context menu being open.
-                Debug.WriteLine($"Busy @ {IdFactory.App(app)}");
-                isVisible = false;
-            }
-
-            return new AppToken(
-                id: IdFactory.App(app),
-                isActive: app.IsActive(),
-                isVisible: isVisible,
-                books: isVisible
-                    ? app.Workbooks.OfType<Workbook>().Select(Book)
-                    : new BookToken[0]);
+            return app.IsVisible() 
+                ? VisibleApp(app) 
+                : InvisibleApp(IdFactory.App(app));
         }
 
-        public static AppToken UnreachableApp(int processId) {
-            return new AppToken(
-                id: new AppId(processId),
+        private static AppToken VisibleApp(Application app) =>
+            new AppToken(
+                id: IdFactory.App(app),
+                isActive: app.IsActive(),
+                isVisible: true,
+                books: app.Workbooks.OfType<Workbook>().Select(Book));
+        
+        private static AppToken InvisibleApp(AppId id) =>
+            new AppToken(
+                id: id,
                 isActive: false,
                 isVisible: false,
                 books: new BookToken[0]);
-        }
 
-        public static BookToken Book(Workbook book) {
+        private static BookToken Book(Workbook book) {
             Requires.NotNull(book, nameof(book));
             return new BookToken(
                 id: IdFactory.Book(book),
@@ -96,31 +111,38 @@ namespace ExcelBrowser.Model {
             throw new NotSupportedException("Invalid sheet type.");
         }
 
-        public static SheetToken Sheet(Worksheet sheet) {
+        private static SheetToken Sheet(Worksheet sheet) {
             Requires.NotNull(sheet, nameof(sheet));
             return new SheetToken(
                 id: IdFactory.Sheet(sheet),
                 isActive: sheet.IsActive(),
                 isVisible: sheet.IsVisible(),
-                index: sheet.Index);
+                index: sheet.Index,
+                tabColor: sheet.TabColor());
         }
 
-        public static SheetToken Sheet(Chart chart) {
+        private static SheetToken Sheet(Chart chart) {
             Requires.NotNull(chart, nameof(chart));
             return new SheetToken(
                 id: IdFactory.Sheet(chart),
                 isActive: chart.IsActive(),
                 isVisible: chart.IsVisible(),
-                index: chart.Index);
+                index: chart.Index,
+                tabColor: chart.TabColor());
         }
-        
-        public static WindowToken Window(Window win) {
+
+        private static WindowToken Window(Window win) {
             Requires.NotNull(win, nameof(win));
+
+            var activeSheet = win.ActiveSheet;
+            var activeSheetId = activeSheet == null ? IdFactory.Sheet(activeSheet) : null;
+
             return new WindowToken(
                 id: IdFactory.Window(win),
                 isActive: win.IsActive(),
                 isVisible: win.Visible,
-                state: ConvertState(win.WindowState));
+                state: ConvertState(win.WindowState),
+                activeSheetId: activeSheetId);
         }
 
         private static WindowState ConvertState(XlWindowState innerState) {

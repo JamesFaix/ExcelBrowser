@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace ExcelBrowser {
     public static class EnumerableExtensionMethods {
@@ -31,5 +32,6 @@ namespace ExcelBrowser {
             Requires.NotNull(sequence, nameof(sequence));
             return condition ? sequence.Concat(new[] { element }) : sequence;
         }
+
     }
 }

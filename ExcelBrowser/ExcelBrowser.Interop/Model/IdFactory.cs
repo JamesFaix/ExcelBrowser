@@ -1,4 +1,5 @@
-﻿using ExcelBrowser.Interop;
+﻿using System;
+using ExcelBrowser.Interop;
 using Microsoft.Office.Interop.Excel;
 
 namespace ExcelBrowser.Model {
@@ -16,6 +17,18 @@ namespace ExcelBrowser.Model {
             return new BookId(
                 processId: book.Application.AsProcess().Id, 
                 bookName: book.Name);
+        }
+
+        internal static SheetId Sheet(object obj) {
+            Requires.NotNull(obj, nameof(obj));
+
+            var sheet = obj as Worksheet;
+            if (sheet != null) return Sheet(sheet);
+
+            var chart = obj as Chart;
+            if (chart != null) return Sheet(chart);
+
+            throw new NotSupportedException("Invalid sheet type.");
         }
 
         public static SheetId Sheet(Worksheet sheet) {
