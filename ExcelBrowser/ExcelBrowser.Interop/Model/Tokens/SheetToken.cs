@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using ExcelBrowser.Interop;
-using xlChart = Microsoft.Office.Interop.Excel.Chart;
-using xlSheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 #pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
@@ -14,17 +11,12 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class SheetToken : Token<SheetId>, IEquatable<SheetToken> {
 
-        public SheetToken(xlSheet sheet) : base(sheet?.Id()) {
-            IsVisible = sheet.IsVisible();
-            Index = sheet.Index;
-            //Debug.WriteLine("SheetToken.Constructor");
+        internal SheetToken(SheetId id, bool isVisible, int index) 
+            : base(id) {
+            IsVisible = isVisible;
+            Index = index;
         }
-
-        public SheetToken(xlChart chart) : base(chart?.Id()) {
-            IsVisible = chart.IsVisible();
-            Index = chart.Index;
-        }
-
+        
         [DataMember(Order = 2)]
         public bool IsVisible { get; }
 

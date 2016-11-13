@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.Serialization;
-using ExcelBrowser.Interop;
-using xlBook = Microsoft.Office.Interop.Excel.Workbook;
-using xlChart = Microsoft.Office.Interop.Excel.Chart;
-using xlSheet = Microsoft.Office.Interop.Excel.Worksheet;
-using xlWin = Microsoft.Office.Interop.Excel.Window;
 
 #pragma warning disable CS0659 
 //Does not need to override GetHashCode because base class implementation is sufficient.
@@ -20,26 +15,29 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class BookToken : Token<BookId> {
 
-        public BookToken(xlBook book) : base(book?.Id()) {
-            // Debug.WriteLine("BookToken.Constructor");
+        internal BookToken(BookId id, bool isVisible, bool isAddIn, 
+            IEnumerable<SheetToken> sheets, IEnumerable<WindowToken> windows,
+            SheetId activeSheetId) 
+            : base(id) {
+            Requires.NotNull(sheets, nameof(sheets));
+            Requires.NotNull(windows, nameof(windows));
 
-            Sheets = book.Sheets.OfType<dynamic>()
-                .Select(s => new SheetToken(s))
-                .ToImmutableArray();
+            IsVisible = isVisible;
+            IsAddIn = isAddIn;
+            Sheets = sheets.ToImmutableArray();
+            Windows = windows.ToImmutableArray();
 
-            Windows = book.Windows.OfType<xlWin>()
-                .Select(w => new WindowToken(w))
-                .ToImmutableArray();
-
-            object activeSheet = book.ActiveSheet;
-            if (activeSheet is xlSheet) ActiveSheet = new SheetToken(activeSheet as xlSheet);
-            else if (activeSheet is xlChart) ActiveSheet = new SheetToken(activeSheet as xlChart);
-            else throw new InvalidOperationException("Invalid sheet type.");
-
-            IsVisible = book.IsVisible();
-            IsAddIn = book.IsAddin;
+            if (activeSheetId != null) {
+                try {
+                    ActiveSheet = Sheets.Single(s => Equals(s.Id, activeSheetId));
+                }
+                catch (InvalidOperationException x)
+                when (x.Message.StartsWith("Sequence contains no elements")) {
+                    throw new InvalidOperationException("ActiveSheet ID not found in sheets collection.", x);
+                }
+            }
         }
-
+        
         [DataMember(Order = 2)]
         public bool IsVisible { get; }
 

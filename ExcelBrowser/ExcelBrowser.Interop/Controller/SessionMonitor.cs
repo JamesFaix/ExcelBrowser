@@ -16,10 +16,10 @@ namespace ExcelBrowser.Controller {
             Debug.WriteLine($"{nameof(SessionMonitor)}.{nameof(SessionMonitor)}");
 
             this.session = Interop.Session.Current;
-            this.Session = new SessionToken(session);
+            this.Session = TokenFactory.Session(session);
 
             this.detector = new ChangeDetector<SessionToken>(
-                getValue: () => new SessionToken(this.session),
+                getValue: () => TokenFactory.Session(this.session),
                 refreshSeconds: refreshSeconds);
 
             detector.Changed += DetectorChanged;

@@ -85,6 +85,7 @@
     <Compile Include="Model\Tokens\SessionToken.cs" />
     <Compile Include="Model\Tokens\SheetToken.cs" />
     <Compile Include="Model\Tokens\Token.cs" />
+    <Compile Include="Model\Tokens\TokenFactory.cs" />
     <Compile Include="Model\WindowState.cs" />
     <Compile Include="Model\Tokens\WindowToken.cs" />
     <Compile Include="Interop\AppFactory.cs" />

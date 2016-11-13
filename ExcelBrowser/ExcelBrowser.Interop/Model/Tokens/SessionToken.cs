@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
-using ExcelBrowser.Interop;
 
 #pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
@@ -13,41 +11,40 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class SessionToken : Token<SessionId>, IEquatable<SessionToken> {
 
-        public SessionToken(Session session)
-            : base(new SessionId(session.SessionId)) {
-          //  Debug.WriteLine("SessionToken.Constructor");
+        internal SessionToken(SessionId id, IEnumerable<AppToken> apps, 
+            AppId activeAppId, AppId primaryAppId) : base(id) {
+            Requires.NotNull(apps, nameof(apps));
 
-            var reachableApps = session.Apps
-                .Select(a => new AppToken(a))
-                .OrderBy(at => at.Id);
+            Apps = apps.ToImmutableArray();
 
-            var unreachableApps = session.UnreachableProcessIds
-                .Select(id => AppToken.Unreachable(id))
-                .OrderBy(at => at.Id);
+            if (activeAppId != null) {
+                try {
+                    ActiveApp = Apps.Single(a => Equals(a.Id, activeAppId));
+                }
+                catch (InvalidOperationException x)
+                when (x.Message.StartsWith("Sequence contains no elements")) {
+                    throw new InvalidOperationException("ActiveApp ID not found in apps collection.", x);
+                }
+            }
 
-            Apps = reachableApps
-                .Concat(unreachableApps)
-                .ToImmutableArray();
-
-            int? topMostId = session.TopMost?.AsProcess()?.Id;
-            if (topMostId.HasValue)
-                ActiveApp = Apps.SingleOrDefault(a => a.Id.ProcessId == topMostId);
-
-            int? primaryId = session.Primary?.AsProcess()?.Id;
-            if (primaryId.HasValue)
-                PrimaryApp = Apps.SingleOrDefault(a => a.Id.ProcessId == primaryId);
-
-            //   Debug.WriteLine("SessionToken.Constructor (end)");
-            //  Debug.WriteLine("");
+            if (primaryAppId != null) {
+                try {
+                    PrimaryApp = Apps.Single(a => Equals(a.Id, primaryAppId));
+                }
+                catch (InvalidOperationException x)
+                when (x.Message.StartsWith("Sequence contains no elements")) {
+                    throw new InvalidOperationException("PrimaryApp ID not found in apps collection.", x);
+                }
+            }
         }
-
-        [DataMember(Order = 1)]
+        
+        [DataMember(Order = 2)]
         public IEnumerable<AppToken> Apps { get; }
 
-        [DataMember(Order = 2)]
+        [DataMember(Order = 3)]
         public AppToken ActiveApp { get; }
 
-        [DataMember(Order = 3)]
+        [DataMember(Order = 4)]
         public AppToken PrimaryApp { get; }
 
         #region Equality

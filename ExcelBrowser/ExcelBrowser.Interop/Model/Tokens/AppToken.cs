@@ -1,13 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
-using ExcelBrowser.Interop;
-using xlApp = Microsoft.Office.Interop.Excel.Application;
-using xlBook = Microsoft.Office.Interop.Excel.Workbook;
-using xlWin = Microsoft.Office.Interop.Excel.Window;
 
 #pragma warning disable CS0659 //Does not need to override GetHashCode because base class implementation is sufficient.
 
@@ -19,47 +14,37 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class AppToken : Token<AppId> {
 
-        public AppToken(xlApp app) : this(app?.Id()) {
-            try {
-                IsVisible = app.Visible
-                    && app.AsProcess().IsVisible();
-            }
-            catch (COMException x)
-            when (x.Message.StartsWith("The message filter indicated that the application is busy.")) {
-                //This means the application is in a state that does not permit COM automation.
-                //Often, this is due to a dialog window or right-click context menu being open.
-                Debug.WriteLine($"Busy @ {Id}");
-                IsVisible = false;
-            }
+        internal AppToken(AppId id, bool isVisible, 
+            IEnumerable<BookToken> books, BookId activeBookId, WindowId activeWindowId) 
+            : base(id) {
+            Requires.NotNull(books, nameof(books));
 
-            if (IsVisible) {
-                Books = app.Workbooks.OfType<xlBook>()
-                    .Select(wb => new BookToken(wb))
-                    .ToImmutableArray();
+            IsVisible = isVisible;
+            Books = books.ToImmutableArray();
 
-                xlBook activeBook = app.ActiveWorkbook;
-                if (activeBook != null) {
-                    var id = activeBook.Id();
-                    ActiveBook = Books.Single(b => Equals(b.Id, id));
+            if (activeBookId != null) {
+                try {
+                    ActiveBook = Books.Single(b => Equals(b.Id, activeBookId));
                 }
+                catch (InvalidOperationException x)
+                when (x.Message.StartsWith("Sequence contains no elements")) {
+                    throw new InvalidOperationException("ActiveBook ID not found in books collection.", x);
+                }
+            }
 
-                xlWin activeWindow = app.ActiveWindow;
-                if (activeWindow != null) {
-                    var id = activeWindow.Id();
-                    ActiveWindow = Books.Single(b => Equals(b.Id.BookName, id.BookName))
-                        .Windows.Single(w => Equals(w.Id, id));
+            if (activeWindowId != null) {
+                try {
+                    ActiveWindow = Books
+                        .SelectMany(b => b.Windows)
+                        .Single(w => Equals(w.Id, activeWindowId));
+                }
+                catch (InvalidOperationException x)
+                when (x.Message.StartsWith("Sequence contains no elements")) {
+                    throw new InvalidOperationException("ActiveWindow ID not found in windows collection.", x);
                 }
             }
         }
-
-        private AppToken(AppId id) : base(id) { }
-
-        public static AppToken Unreachable(int processId) {
-            return new AppToken(new AppId(processId)) {
-                Books = new BookToken[0].ToImmutableArray()
-            };
-        }
-
+        
         [DataMember(Order = 2)]
         public bool IsVisible { get; }
 
