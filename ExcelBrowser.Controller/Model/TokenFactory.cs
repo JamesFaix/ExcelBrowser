@@ -20,6 +20,7 @@ namespace ExcelBrowser.Model {
                 id: IdFactory.App(app),
                 isActive: app.IsActive(),
                 isVisible: true,
+                version: app.VersionName(),
                 books: app.Workbooks.OfType<Workbook>().Select(Book));
 
         internal static AppToken InvisibleApp(AppId id) =>
@@ -27,6 +28,7 @@ namespace ExcelBrowser.Model {
                 id: id,
                 isActive: false,
                 isVisible: false,
+                version: "(Unknown)",
                 books: new BookToken[0]);
 
         internal static BookToken Book(Workbook book) {

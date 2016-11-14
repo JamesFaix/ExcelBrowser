@@ -14,14 +14,16 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public class AppToken : Token<AppId> {
 
-        public AppToken(AppId id, bool isActive, bool isVisible,
-            IEnumerable<BookToken> books) 
+        public AppToken(AppId id, bool isActive, bool isVisible, string version,
+            IEnumerable<BookToken> books)
             : base(id) {
+            Requires.NotNull(version, nameof(version));
             Requires.NotNull(books, nameof(books));
 
             IsActive = isActive;
             IsVisible = isVisible;
-            Books = books.ToImmutableArray();            
+            Version = version;
+            Books = books.ToImmutableArray();
         }
 
         public AppToken ShallowCopy => MemberwiseClone() as AppToken;
@@ -33,6 +35,9 @@ namespace ExcelBrowser.Model {
         public bool IsVisible { get; set; } //Must be settable for caching
 
         [DataMember(Order = 4)]
+        public string Version { get; }
+
+        [DataMember(Order = 20)]
         public IEnumerable<BookToken> Books { get; private set; }
 
         #region Equality
@@ -40,6 +45,7 @@ namespace ExcelBrowser.Model {
         public bool Equals(AppToken other) => base.Equals(other)
             && IsActive == other.IsActive
             && IsVisible == other.IsVisible
+            && Version == other.Version
             && Books.SequenceEqual(other.Books);
 
         public override bool Equals(object obj) => Equals(obj as AppToken);

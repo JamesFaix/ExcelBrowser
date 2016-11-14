@@ -22,7 +22,8 @@ namespace ExcelBrowser.ViewModels {
             var result = new AppViewModel {
                 ProcessId = token.Id.ProcessId,
                 IsActive = token.IsActive,
-                IsVisible = token.IsVisible
+                IsVisible = token.IsVisible,
+                Version = token.Version
             };
             foreach (var bookToken in token.Books) {
                 result.Books.Add(ConvertBook(bookToken));
