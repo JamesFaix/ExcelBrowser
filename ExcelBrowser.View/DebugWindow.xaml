@@ -5,7 +5,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:ExcelBrowser.View"
     mc:Ignorable="d"
-    Title="DebugWindow" Height="350" Width="525">
+    Title="Excel Browser - Debug"
+        Height="350" Width="525" 
+        Icon="pack://siteoforigin:,,,/Resources/MainIcon.ico">
 
     <Grid>
         <Grid.ColumnDefinitions>
