@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using System.Windows.Media;
 
 namespace ExcelBrowser.Model {
 
@@ -28,7 +28,7 @@ namespace ExcelBrowser.Model {
         public static Change WindowVisibleSheet(WindowId id, SheetId sheetId) =>
             new Change<WindowId, SheetId>(ChangeType.SetWindowVisibleSheet, id, sheetId);
 
-        public static Change SheetTabColor(SheetId id, Color color) =>
-            new Change<SheetId, Color>(ChangeType.SetSheetTabColor, id, color);        
+        public static Change SheetTabColor(SheetId id, Color? color) =>
+            new Change<SheetId, Color?>(ChangeType.SetSheetTabColor, id, color);        
     }
 }

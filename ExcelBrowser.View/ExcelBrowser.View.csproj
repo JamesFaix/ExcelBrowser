@@ -48,7 +48,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xaml">
@@ -87,6 +86,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModelFactory.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\BookWindowViewModel.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="ViewModels\SheetViewModel.cs" />
     <Compile Include="ViewModels\SheetWindowViewModel.cs" />
     <Compile Include="ViewModels\BookWindowsViewModel.cs" />
+    <Compile Include="ViewModelUpdater.cs" />
     <Page Include="Controls\AppPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

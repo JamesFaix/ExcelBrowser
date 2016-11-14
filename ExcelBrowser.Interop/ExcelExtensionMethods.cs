@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.Office.Interop.Excel;
-using System.Drawing;
+using System.Windows.Media;
 using System.Runtime.InteropServices;
 
 namespace ExcelBrowser.Interop {
@@ -96,29 +96,22 @@ namespace ExcelBrowser.Interop {
             return new Session(app.AsProcess().SessionId);
         }
 
-        public static Color TabColor(this Worksheet sheet) {
+        public static Color? TabColor(this Worksheet sheet) {
             Requires.NotNull(sheet, nameof(sheet));
 
             var result = sheet.Tab.Color;
-            if (Equals(result, false)) {
-                return Color.Transparent;
-            }
-            else {
-                return ColorTranslator.FromOle(result);
-            }
+            return Equals(result, false)
+                ? null
+                : ColorTranslator.FromOle(result);
         }
 
         public static Color TabColor(this Chart chart) {
             Requires.NotNull(chart, nameof(chart));
 
             var result = chart.Tab.Color;
-            if (Equals(result, false)) {
-                return Color.Transparent;
-            }
-            else {
-                return ColorTranslator.FromOle(result);
-            }
+            return Equals(result, false)
+                ? null
+                : ColorTranslator.FromOle(result);
         }
-
     }
 }

@@ -30,13 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppFactory.cs" />
+    <Compile Include="ColorTranslator.cs" />
     <Compile Include="ExcelExtensionMethods.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="ProcessExtensionMethods.cs" />

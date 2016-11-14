@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Windows.Media;
 using System;
 
 namespace ExcelBrowser.ViewModels {
@@ -12,7 +12,7 @@ namespace ExcelBrowser.ViewModels {
 
         public string Name { get; set; }
         
-        public Color TabColor { get; set; }
+        public Color? TabColor { get; set; }
 
         public bool IsActive { get; set; }
         public bool IsVisible { get; set; }

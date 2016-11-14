@@ -11,14 +11,5 @@ namespace ExcelBrowser.View.Controls {
         public SessionPanel() {
             InitializeComponent();
         }
-
-        private SessionViewModel viewModel;
-        public SessionViewModel ViewModel {
-            get { return viewModel; }
-            set {
-                viewModel = value;
-                this.DataContext = value;
-            }
-        }
     }
 }

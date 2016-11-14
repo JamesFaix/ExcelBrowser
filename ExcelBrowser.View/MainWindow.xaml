@@ -9,11 +9,8 @@
     Title="MainWindow" Height="350" Width="525">
 
     <Grid>
-
         <ScrollViewer >
-
-            <Controls:SessionPanel x:Name="ctrl_Session"/>
-
+            <Controls:SessionPanel x:Name="sessionPanel" />
         </ScrollViewer>
     </Grid>
 </Window>
