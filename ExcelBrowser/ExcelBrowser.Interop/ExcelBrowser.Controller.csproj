@@ -64,7 +64,7 @@
   <ItemGroup>
     <Compile Include="Model\ChangeSet.cs" />
     <Compile Include="Controller\SessionLog.cs" />
-    <Compile Include="Model\TokenExtensionMethods.cs" />
+    <Compile Include="Controller\SessionCache.cs" />
     <Compile Include="Interop\NativeMethods.cs" />
     <Compile Include="Model\IdFactory.cs" />
     <Compile Include="Model\ChangeAnalyzer.cs" />

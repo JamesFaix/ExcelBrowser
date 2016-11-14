@@ -15,20 +15,18 @@ namespace ExcelBrowser.Controller {
             Requires.Positive(refreshSeconds, nameof(refreshSeconds));
             Debug.WriteLine($"{nameof(SessionMonitor)}.{nameof(SessionMonitor)}");
 
-            this.tokenFactory = new TokenFactory();
-
             this.session = Interop.Session.Current;
-            this.Session = tokenFactory.Session(session);
-
+            this.sessionCache = new SessionCache(session);
+            this.Session = sessionCache.Current;
             this.detector = new ChangeDetector<SessionToken>(
-                getValue: () => tokenFactory.Session(this.session),
+                getValue: () => sessionCache.Current,
                 refreshSeconds: refreshSeconds);
 
             detector.Changed += DetectorChanged;
         }
 
-        private readonly TokenFactory tokenFactory;
         private readonly Session session;
+        private readonly SessionCache sessionCache;
         private readonly ChangeDetector<SessionToken> detector;
 
         public SessionToken Session { get; private set; }
