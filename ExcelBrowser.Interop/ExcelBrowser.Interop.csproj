@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C7EDC69-0382-416D-BE94-8ABF86CAE515}</ProjectGuid>
+    <ProjectGuid>{DB8C669C-5C96-416A-AD76-3AAD85C073C2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExcelBrowser</RootNamespace>
-    <AssemblyName>ExcelBrowser.Controller</AssemblyName>
+    <RootNamespace>ExcelBrowser.Interop</RootNamespace>
+    <AssemblyName>ExcelBrowser.Interop</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,8 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,48 +28,23 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Analysis|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Analysis\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>..\AnalysisRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MoreLinqLite">
-      <HintPath>..\Libraries\MoreLinqLite.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ChangeSet.cs" />
-    <Compile Include="Controller\SessionLog.cs" />
-    <Compile Include="Controller\SessionCache.cs" />
-    <Compile Include="Model\IdFactory.cs" />
-    <Compile Include="Model\ChangeAnalyzer.cs" />
-    <Compile Include="Controller\SessionMonitor.cs" />
-    <Compile Include="Model\TokenFactory.cs" />
+    <Compile Include="AppFactory.cs" />
+    <Compile Include="ExcelExtensionMethods.cs" />
+    <Compile Include="NativeMethods.cs" />
+    <Compile Include="ProcessExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Model\Model.cd" />
-    <None Include="packages.config" />
+    <None Include="Interop.cd" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Interop.Excel">
@@ -86,14 +58,6 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExcelBrowser.Interop\ExcelBrowser.Interop.csproj">
-      <Project>{db8c669c-5c96-416a-ad76-3aad85c073c2}</Project>
-      <Name>ExcelBrowser.Interop</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ExcelBrowser.Model\ExcelBrowser.Model.csproj">
-      <Project>{253501ee-c444-4e5b-912f-7b43e1abee5f}</Project>
-      <Name>ExcelBrowser.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ExcelBrowser.Utilities\ExcelBrowser.Utilities.csproj">
       <Project>{a7c6e535-e181-405d-9c6f-a34d74698eb7}</Project>
       <Name>ExcelBrowser.Utilities</Name>

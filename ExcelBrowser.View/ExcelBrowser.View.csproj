@@ -110,9 +110,13 @@
     <Folder Include="Configuration\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExcelBrowser.Interop\ExcelBrowser.Controller.csproj">
+    <ProjectReference Include="..\ExcelBrowser.Controller\ExcelBrowser.Controller.csproj">
       <Project>{0c7edc69-0382-416d-be94-8abf86cae515}</Project>
       <Name>ExcelBrowser.Controller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExcelBrowser.Interop\ExcelBrowser.Interop.csproj">
+      <Project>{db8c669c-5c96-416a-ad76-3aad85c073c2}</Project>
+      <Name>ExcelBrowser.Interop</Name>
     </ProjectReference>
     <ProjectReference Include="..\ExcelBrowser.Model\ExcelBrowser.Model.csproj">
       <Project>{253501ee-c444-4e5b-912f-7b43e1abee5f}</Project>
