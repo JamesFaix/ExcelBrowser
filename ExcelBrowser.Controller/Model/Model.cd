@@ -1,38 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ExcelBrowser.Model.ChangeAnalyzer">
-    <Position X="5.75" Y="4" Width="2.25" />
+    <Position X="0.5" Y="4.5" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAUAEAAAAAAAAAAAIAAAAAAEAAAAAAAAEAAAgAAAA=</HashCode>
-      <FileName>Model\ChangeAnalyzer.cs</FileName>
+      <HashCode>AAAAEAAAAAAAAAAAACAAAAAAAEAAAAABEAEAAggAAAA=</HashCode>
+      <FileName>ModelExtensions\ChangeAnalyzer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ExcelBrowser.Model.ChangeSet&lt;TId, TToken&gt;">
     <Position X="4.5" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAABBAAAACAAAAAACAAAAABAACAEAAAAQBA=</HashCode>
-      <FileName>Model\ChangeSet.cs</FileName>
+      <HashCode>AAACAAAAAACBBAAAACAAAAAACAAAAABAACAEAAAAQBg=</HashCode>
+      <FileName>ModelExtensions\ChangeSet.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ExcelBrowser.Model.IdFactory">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAgCAAgAAA=</HashCode>
-      <FileName>Model\IdFactory.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ExcelBrowser.Model.TokenExtensionMethods">
-    <Position X="0.5" Y="4" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
-      <FileName>Model\TokenExtensionMethods.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAFAAAAAAAAAAAAAAAAAAAAACAAgAAA=</HashCode>
+      <FileName>ModelExtensions\IdFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ExcelBrowser.Model.TokenFactory">
     <Position X="2.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAAACAAAAQFAAAAAAAAAAAAAAAAAAAAgCAAgAAA=</HashCode>
-      <FileName>Model\TokenFactory.cs</FileName>
+      <HashCode>AAAAAAAACAQAAAFAAAAAAAAAAAQAAAAAAAAACAAgAAA=</HashCode>
+      <FileName>ModelExtensions\TokenFactory.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
