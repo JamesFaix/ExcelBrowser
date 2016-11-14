@@ -36,13 +36,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionMethods\ApplicationExtensionMethods.cs" />
     <Compile Include="AppFactory.cs" />
     <Compile Include="ColorTranslator.cs" />
-    <Compile Include="ExcelExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\WindowExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\SheetExtensionMethods.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="ProcessExtensionMethods.cs" />
+    <Compile Include="ExtensionMethods\ProcessExtensionMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
+    <Compile Include="ExtensionMethods\WorkbookExtensionMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Interop.cd" />

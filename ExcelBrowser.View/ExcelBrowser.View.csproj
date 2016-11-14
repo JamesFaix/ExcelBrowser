@@ -90,7 +90,7 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModelFactory.cs" />
+    <Compile Include="ViewModels\ViewModelFactory.cs" />
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\BookViewModel.cs" />
     <Compile Include="ViewModels\BookWindowViewModel.cs" />
@@ -98,7 +98,7 @@
     <Compile Include="ViewModels\SheetViewModel.cs" />
     <Compile Include="ViewModels\SheetWindowViewModel.cs" />
     <Compile Include="ViewModels\BookWindowsViewModel.cs" />
-    <Compile Include="ViewModelUpdater.cs" />
+    <Compile Include="ViewModels\ViewModelUpdater.cs" />
     <Page Include="Controls\AppPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

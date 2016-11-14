@@ -1,113 +1,98 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ExcelBrowser.Model.AppToken" BaseTypeListCollapsed="true">
-    <Position X="1.5" Y="2.5" Width="1.5" />
+    <Position X="2.75" Y="4.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <InheritanceLine Type="ExcelBrowser.Model.Token&lt;TId&gt;" FixedToPoint="true">
       <Path>
-        <Point X="4.5" Y="4.25" />
-        <Point X="4.5" Y="3.125" />
-        <Point X="3" Y="3.125" />
+        <Point X="6.25" Y="4.113" />
+        <Point X="6.25" Y="4.488" />
+        <Point X="4.625" Y="4.488" />
+        <Point X="4.625" Y="5.375" />
+        <Point X="4.25" Y="5.375" />
       </Path>
     </InheritanceLine>
-    <AssociationLine Name="ActiveWindow" Type="ExcelBrowser.Model.WindowToken" ManuallyRouted="true">
-      <Path>
-        <Point X="1.5" Y="3.157" />
-        <Point X="0.198" Y="3.157" />
-        <Point X="0.198" Y="8.02" />
-        <Point X="1.5" Y="8.02" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ABAAAAAAEAAAAAAAgAAQAAAAgAACAIAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Tokens\AppToken.cs</FileName>
+      <HashCode>IBAAAAAAAAAAEAAEkAAAAAAAgAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Tokens\AppToken.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ActiveBook" />
-      <Property Name="ActiveWindow" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Books" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="ExcelBrowser.Model.BookToken" BaseTypeListCollapsed="true">
-    <Position X="1.5" Y="4.25" Width="1.5" />
+    <Position X="5" Y="4.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <InheritanceLine Type="ExcelBrowser.Model.Token&lt;TId&gt;" FixedToPoint="true">
       <Path>
-        <Point X="3.75" Y="4.813" />
-        <Point X="3" Y="4.813" />
+        <Point X="6.25" Y="4.113" />
+        <Point X="6.25" Y="4.488" />
+        <Point X="6.875" Y="4.488" />
+        <Point X="6.875" Y="5.313" />
+        <Point X="6.5" Y="5.313" />
       </Path>
     </InheritanceLine>
-    <AssociationLine Name="Sheets" Type="ExcelBrowser.Model.SheetToken" FixedToPoint="true">
+    <AssociationLine Name="Windows" Type="ExcelBrowser.Model.WindowToken" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="2.562" Y="5.291" />
-        <Point X="2.562" Y="6" />
+        <Point X="6.062" Y="6.627" />
+        <Point X="6.062" Y="7.069" />
+        <Point X="10" Y="7.069" />
+        <Point X="10" Y="6.627" />
       </Path>
-    </AssociationLine>
-    <AssociationLine Name="Windows" Type="ExcelBrowser.Model.WindowToken" ManuallyRouted="true">
-      <Path>
-        <Point X="1.5" Y="4.77" />
-        <Point X="0.523" Y="4.77" />
-        <Point X="0.523" Y="7.729" />
-        <Point X="1.5" Y="7.729" />
-      </Path>
-    </AssociationLine>
-    <AssociationLine Name="ActiveSheet" Type="ExcelBrowser.Model.SheetToken" FixedToPoint="true">
-      <Path>
-        <Point X="1.812" Y="5.291" />
-        <Point X="1.812" Y="6" />
-      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.06" Y="-0.08" />
+      </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>ABIAAAAAAAAAAAEAgAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
-      <FileName>Model\Tokens\BookToken.cs</FileName>
+      <HashCode>ABAAAAAAAAAAEAEEkAAAAAAAAAAAAAAAABAAAAEAAAA=</HashCode>
+      <FileName>Tokens\BookToken.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ActiveSheet" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Sheets" />
       <Property Name="Windows" />
     </ShowAsCollectionAssociation>
   </Class>
   <Class Name="ExcelBrowser.Model.SheetToken" BaseTypeListCollapsed="true">
-    <Position X="1.5" Y="6" Width="1.5" />
+    <Position X="7.25" Y="4.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <InheritanceLine Type="ExcelBrowser.Model.Token&lt;TId&gt;" FixedToPoint="true">
       <Path>
-        <Point X="4.5" Y="5.613" />
-        <Point X="4.5" Y="6.562" />
-        <Point X="3" Y="6.562" />
+        <Point X="6.25" Y="4.113" />
+        <Point X="6.25" Y="4.488" />
+        <Point X="9.125" Y="4.488" />
+        <Point X="9.125" Y="5.312" />
+        <Point X="8.75" Y="5.312" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Tokens\SheetToken.cs</FileName>
+      <HashCode>ABAAAAAAAAQAEAAEkAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Tokens\SheetToken.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="ExcelBrowser.Model.WindowToken" BaseTypeListCollapsed="true">
-    <Position X="1.5" Y="7.5" Width="1.5" />
+    <Position X="9.5" Y="4.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <InheritanceLine Type="ExcelBrowser.Model.Token&lt;TId&gt;" FixedToPoint="true">
       <Path>
-        <Point X="4.5" Y="5.613" />
-        <Point X="4.5" Y="8.062" />
-        <Point X="3" Y="8.062" />
+        <Point X="6.25" Y="4.113" />
+        <Point X="6.25" Y="4.488" />
+        <Point X="11.375" Y="4.488" />
+        <Point X="11.375" Y="5.312" />
+        <Point X="11" Y="5.312" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Model\Tokens\WindowToken.cs</FileName>
+      <HashCode>ABAAAAAAAAAAEAAEkAAACAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Tokens\WindowToken.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="State" />
@@ -115,113 +100,130 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="ExcelBrowser.Model.SessionToken">
-    <Position X="1.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="4.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>ABAAAAEAAAAAAAAAgAAAAAAAEAAAAAAAAAAAAACAAAA=</HashCode>
-      <FileName>Model\Tokens\SessionToken.cs</FileName>
+      <HashCode>ABAAAAEAAAAAAAAEgAAAAAAAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>Tokens\SessionToken.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ActiveApp" />
-      <Property Name="Primary" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Apps" />
     </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ExcelBrowser.Model.AppId">
-    <Position X="6.5" Y="2.25" Width="1.5" />
+    <Position X="2.75" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAQEgAAAAAAAAAAAEIAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Ids\AppId.cs</FileName>
+      <FileName>Ids\AppId.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ExcelBrowser.Model.BookId">
-    <Position X="6.5" Y="4" Width="1.5" />
+    <Position X="5" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAQEgAAAAAAAAAAAEIAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Ids\BookId.cs</FileName>
+      <FileName>Ids\BookId.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ExcelBrowser.Model.SheetId">
-    <Position X="6.5" Y="6" Width="1.5" />
+    <Position X="7.25" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAQEgAAAAAAEAAAAEIAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Ids\SheetId.cs</FileName>
+      <FileName>Ids\SheetId.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ExcelBrowser.Model.WindowId">
-    <Position X="6.5" Y="8" Width="1.5" />
+    <Position X="9.5" Y="0.5" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAQEgAAAAAAAAAAAEIAAAAAAAAAAACA=</HashCode>
-      <FileName>Model\Ids\WindowId.cs</FileName>
+      <FileName>Ids\WindowId.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="ExcelBrowser.Model.Token&lt;TId&gt;">
-    <Position X="3.75" Y="4.25" Width="1.5" />
+    <Position X="5.5" Y="2.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAEgAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\Tokens\Token.cs</FileName>
+      <FileName>Tokens\Token.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ExcelBrowser.Model.ModelChange">
-    <Position X="10" Y="0.5" Width="1.5" />
-    <Compartments>
-      <Compartment Name="Fields" Collapsed="true" />
-    </Compartments>
-    <TypeIdentifier>
-      <HashCode>QAgCAAAAAAAgBMREAAAAAEAAAAQAAQAAQQAAAAgAAEA=</HashCode>
-      <FileName>Model\ModelChange.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="ExcelBrowser.Model.ModelChange&lt;TId&gt;">
-    <Position X="10" Y="4.75" Width="1.75" />
+  <Class Name="ExcelBrowser.Model.Change&lt;TId&gt;">
+    <Position X="6" Y="8" Width="1.75" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Model\ModelChange.cs</FileName>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Changes\Change.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ExcelBrowser.Model.ModelChange&lt;TId, TValue&gt;">
-    <Position X="10" Y="7" Width="2.25" />
+  <Class Name="ExcelBrowser.Model.Change&lt;TId, TValue&gt;">
+    <Position X="6" Y="10" Width="2.25" />
     <Compartments>
       <Compartment Name="Methods" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
-      <FileName>Model\ModelChange.cs</FileName>
+      <FileName>Changes\Change.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Model.Change">
+    <Position X="2.75" Y="8" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>ACgCAAAAAAAAAEQEAAAAAEAAAIAAAAAARQAAAIAAAAA=</HashCode>
+      <FileName>Changes\Change.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ExcelBrowser.Model.ChangeAnalyzer">
+    <Position X="10.75" Y="8.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAACAAAAAAAEAAAAABEAEAAggAAAA=</HashCode>
+      <FileName>Changes\ChangeAnalyzer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExcelBrowser.Model.ChangeSet&lt;TParentId, TParentToken, TChildId, TChildToken&gt;">
+    <Position X="8.75" Y="7.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAACBBAAAACAAAAAACAAAAABAACAEAAAAQBg=</HashCode>
+      <FileName>Changes\ChangeSet.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Enum Name="ExcelBrowser.Model.WindowState">
-    <Position X="1.5" Y="9" Width="1.5" />
+    <Position X="11.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAIAAAAAAgA=</HashCode>
-      <FileName>Model\WindowState.cs</FileName>
+      <FileName>Tokens\WindowState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ExcelBrowser.Model.ChangeType">
+    <Position X="0.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAIQAQAAAQABAAAAAAAAAAAAAAAgIAAABA=</HashCode>
+      <FileName>Changes\ChangeType.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

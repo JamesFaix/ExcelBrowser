@@ -6,7 +6,7 @@ using MoreLinq;
 
 namespace ExcelBrowser.Model {
 
-    internal static class ChangeAnalyzer {
+    public static class ChangeAnalyzer {
 
         public static IEnumerable<Change> FindChanges(ValueChange<SessionToken> sessionChange) {
             Requires.NotNull(sessionChange, nameof(sessionChange));

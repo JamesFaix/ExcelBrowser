@@ -45,34 +45,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MoreLinqLite">
-      <HintPath>..\Libraries\MoreLinqLite.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.2.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\ChangeSet.cs" />
-    <Compile Include="Controller\SessionLog.cs" />
-    <Compile Include="Controller\SessionCache.cs" />
-    <Compile Include="Model\IdFactory.cs" />
-    <Compile Include="Model\ChangeAnalyzer.cs" />
-    <Compile Include="Controller\SessionMonitor.cs" />
-    <Compile Include="Model\TokenFactory.cs" />
+    <Compile Include="SessionLog.cs" />
+    <Compile Include="SessionCache.cs" />
+    <Compile Include="IdFactory.cs" />
+    <Compile Include="SessionMonitor.cs" />
+    <Compile Include="TokenFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Model\Model.cd" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Interop.Excel">
