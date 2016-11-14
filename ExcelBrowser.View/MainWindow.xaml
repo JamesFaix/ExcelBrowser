@@ -8,7 +8,7 @@
     x:Class="ExcelBrowser.View.MainWindow"
     mc:Ignorable="d"
     Title="Excel Browser" 
-    Width="300" SizeToContent="Height" Icon="Images/MainIcon.png">
+    Width="300" SizeToContent="Height" Icon="Images/MainIcon.ico">
 
     <Grid>
         <StackPanel>
