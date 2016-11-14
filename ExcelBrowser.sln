@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.View", "ExcelBrowser\ExcelBrowser.View.csproj", "{FEEFFF87-1F89-44F1-8E9F-AD78E9E9EA9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.View", "ExcelBrowser.View\ExcelBrowser.View.csproj", "{FEEFFF87-1F89-44F1-8E9F-AD78E9E9EA9C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Test", "ExcelBrowser.Test\ExcelBrowser.Test.csproj", "{8EDF4429-251A-416D-BB68-93F227191BCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Controller", "ExcelBrowser.Interop\ExcelBrowser.Controller.csproj", "{0C7EDC69-0382-416D-BE94-8ABF86CAE515}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelBrowser.Controller", "ExcelBrowser.Controller\ExcelBrowser.Controller.csproj", "{0C7EDC69-0382-416D-BE94-8ABF86CAE515}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{DA3E11D7-33D7-4B3A-8E39-B4647CAB97D4}"
 EndProject
