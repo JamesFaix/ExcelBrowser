@@ -5,8 +5,7 @@ namespace ExcelBrowser.Model {
     [DataContract]
     public partial class Change {
 
-        internal Change(string type, object id) {
-            Requires.NotNull(type, nameof(type));
+        internal Change(ChangeType type, object id) {
             Requires.NotNull(id, nameof(id));
 
             Type = type;
@@ -14,7 +13,7 @@ namespace ExcelBrowser.Model {
         }
 
         [DataMember(Order = 1)]
-        public string Type { get; }
+        public ChangeType Type { get; }
 
         [DataMember(Order = 2)]
         public object Id { get; }
@@ -23,7 +22,7 @@ namespace ExcelBrowser.Model {
     }
 
     public class Change<TId> : Change {
-        internal Change(string type, TId id)
+        internal Change(ChangeType type, TId id)
             : base(type, id) { }
 
         public new TId Id => (TId)base.Id;
@@ -33,7 +32,7 @@ namespace ExcelBrowser.Model {
 
     [DataContract]
     public class Change<TId, TValue> : Change<TId> {
-        internal Change(string type, TId id, TValue value)
+        internal Change(ChangeType type, TId id, TValue value)
             : base(type, id) {
             Value = value;
         }

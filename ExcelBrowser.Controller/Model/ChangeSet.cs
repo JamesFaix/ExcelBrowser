@@ -5,48 +5,50 @@ using ExcelBrowser.Monitoring;
 
 namespace ExcelBrowser.Model {
 
-    internal class ChangeSet<TId, TToken>
-       where TToken : Token<TId> {
+    internal class ChangeSet<TParentId, TParentToken, TChildId, TChildToken>
+       where TParentToken : Token<TParentId>
+       where TChildToken : Token<TChildId> {
 
-        public ChangeSet(ValueChange<IEnumerable<TToken>> tokens) {
+        public ChangeSet(ValueChange<TParentToken> parentToken, ValueChange<IEnumerable<TChildToken>> childTokens) {
 
-            OldIds = Ids(tokens.OldValue).ToArray();
-            NewIds = Ids(tokens.NewValue).ToArray();
+            OldIds = Ids(childTokens.OldValue).ToArray();
+            NewIds = Ids(childTokens.NewValue).ToArray();
 
-            RemovedIds = Ids(ExceptIds(tokens.OldValue, NewIds)).ToArray();
-            AddedIds = Ids(ExceptIds(tokens.NewValue, OldIds)).ToArray();
+            RemovedIds = Ids(ExceptIds(childTokens.OldValue, NewIds)).ToArray();
+            AddedIds = Ids(ExceptIds(childTokens.NewValue, OldIds)).ToArray();
             PersistentIds = NewIds.Intersect(OldIds).ToArray();
 
-            var persistedOld = IntersectIds(tokens.OldValue, PersistentIds).OrderBy(t => t.Id);
-            var persistedNew = IntersectIds(tokens.NewValue, PersistentIds).OrderBy(t => t.Id);
-
+            var persistedOld = IntersectIds(childTokens.OldValue, PersistentIds).OrderBy(t => t.Id);
+            var persistedNew = IntersectIds(childTokens.NewValue, PersistentIds).OrderBy(t => t.Id);
             var persistedPairs = persistedOld.Zip(persistedNew, ValueChange.Create);
-
             Diffs = persistedPairs.Where(vc => vc.IsChanged()).ToArray();
+
+            AddedChanges = AddedIds.Select(id => Change.Added(parentToken.NewValue.Id, id)).ToArray();
+            RemovedChanges = RemovedIds.Select(id => Change.Removed(parentToken.NewValue.Id, id)).ToArray();
         }
 
-        public TId[] OldIds { get; }
-        public TId[] NewIds { get; }
-        public TId[] AddedIds { get; }
-        public TId[] RemovedIds { get; }
-        public TId[] PersistentIds { get; }
-        public ValueChange<TToken>[] Diffs { get; }
+        public IEnumerable<TChildId> OldIds { get; }
+        public IEnumerable<TChildId> NewIds { get; }
+        public IEnumerable<TChildId> AddedIds { get; }
+        public IEnumerable<TChildId> RemovedIds { get; }
+        public IEnumerable<TChildId> PersistentIds { get; }
+        public IEnumerable<ValueChange<TChildToken>> Diffs { get; }
 
-        public IEnumerable<Change> AddedChanges => AddedIds.Select(id => Change.Added(id));
-        public IEnumerable<Change> RemovedChanges => RemovedIds.Select(id => Change.Removed(id));
+        public IEnumerable<Change> AddedChanges { get; }
+        public IEnumerable<Change> RemovedChanges { get; }
 
-        public IEnumerable<Change> NestedChanges(Func<ValueChange<TToken>, IEnumerable<Change>> selector) {
+        public IEnumerable<Change> NestedChanges(Func<ValueChange<TChildToken>, IEnumerable<Change>> selector) {
             Requires.NotNull(selector, nameof(selector));
             return Diffs.SelectMany(selector);
         }
 
-        private IEnumerable<TId> Ids(IEnumerable<Token<TId>> tokens) =>
+        private IEnumerable<TChildId> Ids(IEnumerable<Token<TChildId>> tokens) =>
             tokens.Select(t => t.Id);
 
-        private IEnumerable<TToken> ExceptIds(IEnumerable<TToken> tokens, IEnumerable<TId> ids) =>
+        private IEnumerable<TChildToken> ExceptIds(IEnumerable<TChildToken> tokens, IEnumerable<TChildId> ids) =>
             tokens.Where(t => !ids.Contains(t.Id));
 
-        private IEnumerable<TToken> IntersectIds(IEnumerable<TToken> tokens, IEnumerable<TId> ids) =>
+        private IEnumerable<TChildToken> IntersectIds(IEnumerable<TChildToken> tokens, IEnumerable<TChildId> ids) =>
             tokens.Where(t => ids.Contains(t.Id));
     }
 }

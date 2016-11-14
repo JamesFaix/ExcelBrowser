@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Change.cs" />
     <Compile Include="Change.Factory.cs" />
+    <Compile Include="ChangeType.cs" />
     <Compile Include="Ids\AppId.cs" />
     <Compile Include="Ids\BookId.cs" />
     <Compile Include="Ids\SessionId.cs" />

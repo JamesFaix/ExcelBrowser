@@ -22,7 +22,7 @@ namespace ExcelBrowser.Model {
         }
 
         private static IEnumerable<Change> GetSessionChanges(ValueChange<SessionToken> diff) {
-            var ids = new ChangeSet<AppId, AppToken>(diff.Select(session => session.Apps));
+            var ids = new ChangeSet<SessionId, SessionToken, AppId, AppToken>(diff, diff.Select(session => session.Apps));
 
             return ids.RemovedChanges
                  .Concat(ids.AddedChanges)
@@ -31,7 +31,7 @@ namespace ExcelBrowser.Model {
 
         private static IEnumerable<Change> GetAppChanges(ValueChange<AppToken> diff) {
 
-            var ids = new ChangeSet<BookId, BookToken>(diff.Select(app => app.Books));
+            var ids = new ChangeSet<AppId, AppToken, BookId, BookToken>(diff, diff.Select(app => app.Books));
 
             var result = Enumerable.Empty<Change>();
 
@@ -69,7 +69,7 @@ namespace ExcelBrowser.Model {
         }
 
         private static IEnumerable<Change> GetSheetCollectionChanges(ValueChange<BookToken> diff) {
-            var ids = new ChangeSet<SheetId, SheetToken>(diff.Select(book => book.Sheets));
+            var ids = new ChangeSet<BookId, BookToken, SheetId, SheetToken>(diff, diff.Select(book => book.Sheets));
 
             return ids.RemovedChanges
                 .Concat(ids.AddedChanges)
@@ -84,14 +84,14 @@ namespace ExcelBrowser.Model {
                 yield return Change.SetVisibility(diff.NewValue.Id, diff.NewValue.IsVisible);
 
             if (diff.IsChanged(s => s.Index))
-                yield return Change.SheetMove(diff.NewValue.Id, diff.NewValue.Index);
+                yield return Change.SheetSetIndex(diff.NewValue.Id, diff.NewValue.Index);
 
             if (diff.IsChanged(s => s.TabColor))
                 yield return Change.SheetTabColor(diff.NewValue.Id, diff.NewValue.TabColor);
         }
 
         private static IEnumerable<Change> GetWindowCollectionChanges(ValueChange<BookToken> diff) {
-            var ids = new ChangeSet<WindowId, WindowToken>(diff.Select(book => book.Windows));
+            var ids = new ChangeSet<BookId, BookToken, WindowId, WindowToken>(diff, diff.Select(book => book.Windows));
 
             return ids.RemovedChanges
                 .Concat(ids.AddedChanges)
