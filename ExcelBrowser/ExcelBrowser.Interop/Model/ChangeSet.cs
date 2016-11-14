@@ -10,15 +10,15 @@ namespace ExcelBrowser.Model {
 
         public ChangeSet(ValueChange<IEnumerable<TToken>> tokens) {
 
-            OldIds = tokens.OldValue.Ids().ToArray();
-            NewIds = tokens.NewValue.Ids().ToArray();
+            OldIds = Ids(tokens.OldValue).ToArray();
+            NewIds = Ids(tokens.NewValue).ToArray();
 
-            RemovedIds = tokens.OldValue.ExceptIds(NewIds).Ids().ToArray();
-            AddedIds = tokens.NewValue.ExceptIds(OldIds).Ids().ToArray();
+            RemovedIds = Ids(ExceptIds(tokens.OldValue, NewIds)).ToArray();
+            AddedIds = Ids(ExceptIds(tokens.NewValue, OldIds)).ToArray();
             PersistentIds = NewIds.Intersect(OldIds).ToArray();
 
-            var persistedOld = tokens.OldValue.IntersectIds(PersistentIds).OrderBy(t => t.Id);
-            var persistedNew = tokens.NewValue.IntersectIds(PersistentIds).OrderBy(t => t.Id);
+            var persistedOld = IntersectIds(tokens.OldValue, PersistentIds).OrderBy(t => t.Id);
+            var persistedNew = IntersectIds(tokens.NewValue, PersistentIds).OrderBy(t => t.Id);
 
             var persistedPairs = persistedOld.Zip(persistedNew, ValueChange.Create);
 
@@ -39,5 +39,14 @@ namespace ExcelBrowser.Model {
             Requires.NotNull(selector, nameof(selector));
             return Diffs.SelectMany(selector);
         }
+
+        private IEnumerable<TId> Ids(IEnumerable<Token<TId>> tokens) =>
+            tokens.Select(t => t.Id);
+
+        private IEnumerable<TToken> ExceptIds(IEnumerable<TToken> tokens, IEnumerable<TId> ids) =>
+            tokens.Where(t => !ids.Contains(t.Id));
+
+        private IEnumerable<TToken> IntersectIds(IEnumerable<TToken> tokens, IEnumerable<TId> ids) =>
+            tokens.Where(t => ids.Contains(t.Id));
     }
 }
