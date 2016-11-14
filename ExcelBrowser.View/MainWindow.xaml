@@ -4,13 +4,23 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:ExcelBrowser.View"
-    xmlns:Controls="clr-namespace:ExcelBrowser.View.Controls" x:Class="ExcelBrowser.View.MainWindow"
+    xmlns:Controls="clr-namespace:ExcelBrowser.View.Controls" 
+    x:Class="ExcelBrowser.View.MainWindow"
     mc:Ignorable="d"
-    Title="MainWindow" Height="350" Width="525">
+    Title="Excel Browser" 
+    Width="300"
+    SizeToContent="Height">
 
     <Grid>
-        <ScrollViewer >
-            <Controls:SessionPanel x:Name="sessionPanel" />
-        </ScrollViewer>
+        <StackPanel>
+            <Menu>
+                <MenuItem Header="Tools"/>
+                <MenuItem Header="Settings"/>
+                <MenuItem Header="Help"/>
+            </Menu>
+            <ScrollViewer >
+                <Controls:SessionPanel x:Name="sessionPanel" />
+            </ScrollViewer>
+        </StackPanel>
     </Grid>
 </Window>

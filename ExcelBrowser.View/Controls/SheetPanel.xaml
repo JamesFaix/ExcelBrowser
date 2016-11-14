@@ -17,7 +17,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="" Background="{Binding TabColor}"/>
+                    <Button Content="" Background="{Binding Background}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

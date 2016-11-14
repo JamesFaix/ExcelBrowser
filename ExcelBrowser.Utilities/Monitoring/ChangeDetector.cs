@@ -9,7 +9,7 @@ namespace ExcelBrowser.Monitoring {
 
     public class ChangeDetector<T> : IDisposable {
 
-        public ChangeDetector(Func<T> getValue, double refreshSeconds, 
+        public ChangeDetector(Func<T> getValue, double refreshSeconds,
             Func<T, T, bool> valueEqualityComparison = null)
             : base() {
             Requires.NotNull(getValue, nameof(getValue));
@@ -44,7 +44,7 @@ namespace ExcelBrowser.Monitoring {
                     OnChanged(new ValueChange<T>(oldPrevious, currentValue));
                 }
                 else {
-                  //  Debug.Print("ChangeDetector: No change");
+                    //  Debug.Print("ChangeDetector: No change");
                 }
             }
             else {
