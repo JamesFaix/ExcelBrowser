@@ -69,12 +69,6 @@
     <Compile Include="Controller\SessionMonitor.cs" />
     <Compile Include="Model\TokenFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\AppPanelViewModel.cs" />
-    <Compile Include="ViewModels\BookPanelViewModel.cs" />
-    <Compile Include="ViewModels\SessionPanelViewModel.cs" />
-    <Compile Include="ViewModels\SheetPanelViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelUpdater.cs" />
-    <Compile Include="ViewModels\WindowsPanelViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Model\Model.cd" />

@@ -48,6 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xaml">
@@ -62,8 +63,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\AppPanel.xaml.cs">
+      <DependentUpon>AppPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BookPanel.xaml.cs">
+      <DependentUpon>BookPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BookWindowPanel.xaml.cs">
+      <DependentUpon>BookWindowPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SessionPanel.xaml.cs">
       <DependentUpon>SessionPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SheetPanel.xaml.cs">
+      <DependentUpon>SheetPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BookWindowsPanel.xaml.cs">
+      <DependentUpon>BookWindowsPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="DebugWindow.xaml.cs">
       <DependentUpon>DebugWindow.xaml</DependentUpon>
@@ -71,7 +87,34 @@
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AppViewModel.cs" />
+    <Compile Include="ViewModels\BookViewModel.cs" />
+    <Compile Include="ViewModels\BookWindowViewModel.cs" />
+    <Compile Include="ViewModels\SessionViewModel.cs" />
+    <Compile Include="ViewModels\SheetViewModel.cs" />
+    <Compile Include="ViewModels\SheetWindowViewModel.cs" />
+    <Compile Include="ViewModels\BookWindowsViewModel.cs" />
+    <Page Include="Controls\AppPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BookPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BookWindowPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SessionPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SheetPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BookWindowsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
