@@ -14,6 +14,7 @@ namespace ExcelBrowser.ViewModels {
 
             this.monitor = monitor;
             monitor.SessionChanged += SessionChanged;
+            UpdateViewModel();
         }
 
         private readonly SessionMonitor monitor;
@@ -21,9 +22,13 @@ namespace ExcelBrowser.ViewModels {
         public event PropertyChangedEventHandler PropertyChanged;
 
         public SessionViewModel ViewModel { get; set; }
-        
-        private void SessionChanged(object sender, EventArgs<IEnumerable<Change>> e) {
+
+        private void UpdateViewModel() {
             ViewModel = ViewModelFactory.ConvertSession(monitor.Session);
+        }
+
+        private void SessionChanged(object sender, EventArgs<IEnumerable<Change>> e) {
+            UpdateViewModel();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ViewModel"));
             Debug.WriteLine("ViewModel updated");
         }        
