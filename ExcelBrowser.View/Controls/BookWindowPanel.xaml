@@ -8,6 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
         <Button Content="{Binding Label}" 
-                Background="{Binding Background}" FontWeight="{Binding FontWeight}"/>
+                Background="{Binding Background}" FontWeight="{Binding FontWeight}"
+                    Command="{Binding Activate}"/>
     </Grid>
 </UserControl>

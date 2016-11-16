@@ -11,7 +11,8 @@
             <StackPanel>
                 <Button Content="{Binding Label}" 
                         Background="{Binding Background}" Foreground="{Binding Foreground}" FontWeight="{Binding FontWeight}"
-                        HorizontalContentAlignment="Left"/>
+                        HorizontalContentAlignment="Left"
+                        Command="{Binding Activate}"/>
 
                 <ItemsControl ItemsSource="{Binding Books}">
                     <ItemsControl.ItemsPanel>

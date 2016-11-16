@@ -19,7 +19,8 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="" Background="{Binding Background}"/>
+                    <Button Content="" Background="{Binding Background}"
+                    Command="{Binding Activate}"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

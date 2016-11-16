@@ -9,9 +9,10 @@
     <Grid Background="LightGray">
         <StackPanel>
             <Button Content="{Binding Label}" 
-                        Foreground="{Binding Foreground}" Background="{Binding Background}" 
-                        FontWeight="{Binding FontWeight}"
-                        HorizontalContentAlignment="Left"/>
+                    Foreground="{Binding Foreground}" Background="{Binding Background}" 
+                    FontWeight="{Binding FontWeight}"
+                    HorizontalContentAlignment="Left"
+                    Command="{Binding Activate}"/>
             <local:BookWindowsPanel DataContext="{Binding Windows}" Margin="20,0,0,0"/>
             <ItemsControl ItemsSource="{Binding Sheets}" Margin="20,0,0,0">
                 <ItemsControl.ItemsPanel>
