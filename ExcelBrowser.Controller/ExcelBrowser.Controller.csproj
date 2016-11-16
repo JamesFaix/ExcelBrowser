@@ -50,6 +50,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SessionCommands.cs" />
     <Compile Include="SessionLog.cs" />
     <Compile Include="SessionCache.cs" />
     <Compile Include="IdFactory.cs" />

@@ -74,7 +74,7 @@
     <Compile Include="Tokens\SheetToken.cs" />
     <Compile Include="Tokens\Token.cs" />
     <Compile Include="Tokens\WindowToken.cs" />
-    <Compile Include="WindowState.cs" />
+    <Compile Include="Tokens\WindowState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Model.cd" />

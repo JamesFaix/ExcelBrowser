@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ExcelBrowser.Model;
 
@@ -92,6 +93,7 @@ namespace ExcelBrowser.ViewModels {
 
         private class ActiveSheet {
             public ActiveSheet(int windowIndex, string sheetName) {
+                Debug.Assert(sheetName != null);
                 WindowIndex = windowIndex;
                 SheetName = sheetName;
             }

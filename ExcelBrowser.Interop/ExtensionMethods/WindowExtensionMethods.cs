@@ -11,7 +11,12 @@ namespace ExcelBrowser.Interop {
 
         public static bool IsActive(this Window window) {
             Requires.NotNull(window, nameof(window));
-            return Equals(window, window.Application.ActiveWindow);
+
+            var other = window.Application.ActiveWindow;
+            if (other == null) return false;
+
+            return window.WindowNumber == other.WindowNumber
+                && window.Workbook().Name == other.Workbook().Name;
         }
     }
 }

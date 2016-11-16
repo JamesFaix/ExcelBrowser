@@ -7,6 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Button Content="{Binding Label}" Background="White"/>
+        <Button Content="{Binding Label}" 
+                Background="{Binding Background}" FontWeight="{Binding FontWeight}"/>
     </Grid>
 </UserControl>

@@ -7,24 +7,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="LightGray">
-        <Border BorderThickness="3" BorderBrush="Black">
-            <StackPanel>
-                <Button Content="{Binding Name}" HorizontalContentAlignment="Left"/>
-                <local:BookWindowsPanel DataContext="{Binding Windows}" Margin="20,0,0,0"/>
-                <ItemsControl ItemsSource="{Binding Sheets}" Margin="20,0,0,0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
+        <StackPanel>
+            <Button Content="{Binding Name}" 
+                        Foreground="{Binding Foreground}" Background="{Binding Background}" 
+                        FontWeight="{Binding FontWeight}"
+                        HorizontalContentAlignment="Left"/>
+            <local:BookWindowsPanel DataContext="{Binding Windows}" Margin="20,0,0,0"/>
+            <ItemsControl ItemsSource="{Binding Sheets}" Margin="20,0,0,0">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <local:SheetPanel DataContext="{Binding}"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </Border>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <local:SheetPanel DataContext="{Binding}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
     </Grid>
 </UserControl>

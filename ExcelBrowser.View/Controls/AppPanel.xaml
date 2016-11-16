@@ -9,7 +9,9 @@
     <Grid>
         <Border BorderThickness="6" BorderBrush="Silver">
             <StackPanel>
-                <Button Content="{Binding Label}" HorizontalContentAlignment="Left"/>
+                <Button Content="{Binding Label}" 
+                        Background="{Binding Background}" Foreground="{Binding Foreground}" FontWeight="{Binding FontWeight}"
+                        HorizontalContentAlignment="Left"/>
 
                 <ItemsControl ItemsSource="{Binding Books}">
                     <ItemsControl.ItemsPanel>

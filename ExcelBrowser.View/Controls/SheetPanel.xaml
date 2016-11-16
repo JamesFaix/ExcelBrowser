@@ -7,7 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock Text="{Binding Name}" IsHitTestVisible="false" Panel.ZIndex="2" Margin="3,3,0,0"/>
+        <TextBlock Text="{Binding Name}" 
+                   Foreground="{Binding Foreground}" FontWeight="{Binding FontWeight}"
+                   IsHitTestVisible="false" Panel.ZIndex="2" Margin="3,3,0,0"/>
         <ItemsControl ItemsSource="{Binding Windows}" Panel.ZIndex="1">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

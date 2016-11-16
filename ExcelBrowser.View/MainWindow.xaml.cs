@@ -2,12 +2,14 @@
 using System.Windows;
 using ExcelBrowser.Controller;
 using ExcelBrowser.ViewModels;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ExcelBrowser.View {
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
     public partial class MainWindow : Window, IDisposable {
 
         public MainWindow(SessionMonitor monitor) {
@@ -31,6 +33,7 @@ namespace ExcelBrowser.View {
             });
         }
 
+        [SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly")]
         public void Dispose() {
             monitor.Dispose();
         }

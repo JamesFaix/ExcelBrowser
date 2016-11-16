@@ -7,6 +7,8 @@ namespace ExcelBrowser.ViewModels {
         public Color? TabColor { get; set; }
         public bool IsActive { get; set; }
 
-        public Brush Background => new SolidColorBrush { Color = TabColor ?? Colors.LightGray };
+        public Brush Background => new SolidColorBrush {
+            Color = IsActive ? Colors.White : (TabColor ?? Colors.LightGray)
+        };
     }
 }

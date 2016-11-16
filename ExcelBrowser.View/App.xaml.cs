@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using ExcelBrowser.Controller;
+using ExcelBrowser.View;
 
 namespace ExcelBrowser {
     /// <summary>
@@ -11,10 +12,12 @@ namespace ExcelBrowser {
             base.OnStartup(e);
 
             var monitor = new SessionMonitor(refreshSeconds:1);
-            //var window = new View.DebugWindow(monitor);
-            var window = new View.MainWindow(monitor);
 
+            var window = new MainWindow(monitor);
             window.Show();
+            
+            var debugWindow = new DebugWindow(monitor);
+            debugWindow.Show();
         }
     }
 }

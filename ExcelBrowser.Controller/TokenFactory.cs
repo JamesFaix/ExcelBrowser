@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using ExcelBrowser.Interop;
 using Microsoft.Office.Interop.Excel;
@@ -6,12 +7,12 @@ using Microsoft.Office.Interop.Excel;
 namespace ExcelBrowser.Model {
 
     internal static class TokenFactory {
-        
+
         internal static AppToken App(Application app) {
             Requires.NotNull(app, nameof(app));
 
-            return app.IsVisible() 
-                ? VisibleApp(app) 
+            return app.IsVisible()
+                ? VisibleApp(app)
                 : InvisibleApp(IdFactory.App(app));
         }
 
@@ -39,7 +40,9 @@ namespace ExcelBrowser.Model {
                 isVisible: book.IsVisible(),
                 isAddIn: book.IsAddin,
                 sheets: book.Sheets.OfType<object>().Select(Sheet),
-                windows: book.Windows.OfType<Window>().Select(Window));
+                windows: book.Windows.OfType<Window>()
+                    .OrderBy(w => w.WindowNumber)
+                    .Select(Window));
         }
 
         private static SheetToken Sheet(object obj) {
@@ -75,8 +78,9 @@ namespace ExcelBrowser.Model {
         internal static WindowToken Window(Window win) {
             Requires.NotNull(win, nameof(win));
 
-            var activeSheet = win.ActiveSheet;
-            var activeSheetId = activeSheet == null ? IdFactory.Sheet(activeSheet) : null;
+            object activeSheet = win.ActiveSheet;
+            Debug.Assert(activeSheet != null);
+            var activeSheetId = activeSheet != null ? IdFactory.Sheet(activeSheet) : null;
 
             return new WindowToken(
                 id: IdFactory.Window(win),
