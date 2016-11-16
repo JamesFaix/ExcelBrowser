@@ -9,5 +9,7 @@ namespace ExcelBrowser.ViewModels {
         }
 
         public ObservableCollection<BookWindowViewModel> Windows { get; }
+
+        public double Height => (Windows.Count > 1) ? 20 : 0;
     }
 }

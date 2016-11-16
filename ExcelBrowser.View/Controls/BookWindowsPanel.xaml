@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ExcelBrowser.View.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid Height="{Binding Height}">
         <ItemsControl ItemsSource="{Binding Windows}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
