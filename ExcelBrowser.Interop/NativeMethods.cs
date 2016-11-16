@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
-using xlWin = Microsoft.Office.Interop.Excel.Window;
 using xlApp = Microsoft.Office.Interop.Excel.Application;
+using xlWin = Microsoft.Office.Interop.Excel.Window;
 
 namespace ExcelBrowser.Interop {
 
@@ -165,6 +166,24 @@ namespace ExcelBrowser.Interop {
         /// If the specified window is a child window, the handle identifies a sibling window.
         /// </summary>
         private const int GW_HWNDPREV = 3;
+        #endregion
+
+        #region Bring Process to front
+
+        public static bool BringToFront(Process process) {
+            Requires.NotNull(process, nameof(process));
+            var handle = process.MainWindowHandle;
+            if (handle == IntPtr.Zero) return false;
+            try {
+                SetForegroundWindow(handle);
+                return true;
+            } 
+            catch { return false; }
+        }
+
+        [DllImport(USER32)]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
         #endregion
     }
 }

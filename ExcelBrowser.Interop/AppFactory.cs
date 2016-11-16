@@ -5,21 +5,7 @@ using xlApp = Microsoft.Office.Interop.Excel.Application;
 namespace ExcelBrowser.Interop {
 
     public static class AppFactory {
-
-        /// <summary>
-        /// Gets the Windows Process associated with the given Excel instance.
-        /// </summary>
-        /// <param name="app">The application.</param>
-        public static Process AsProcess(this xlApp app) {
-            Requires.NotNull(app, nameof(app));
-
-            var mainWindowHandle = app.Hwnd;
-            var processId = NativeMethods.ProcessIdFromWindowHandle(mainWindowHandle);
-            var process = Process.GetProcessById(processId);
-
-            return process;
-        }
-
+        
         /// <summary>
         /// Gets the Excel instance running in the given process, or null if none exists.
         /// </summary>

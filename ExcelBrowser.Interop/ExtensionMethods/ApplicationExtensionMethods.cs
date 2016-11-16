@@ -1,26 +1,36 @@
 ﻿using System.Runtime.InteropServices;
-using Microsoft.Office.Interop.Excel;
+using xlApp = Microsoft.Office.Interop.Excel.Application;
+using System.Diagnostics;
 
 namespace ExcelBrowser.Interop {
 
     public static class ApplicationExtensionMethods {
 
-        public static Session Session(this Application app) {
+        public static Session Session(this xlApp app) {
             Requires.NotNull(app, nameof(app));
-            return new Session(app.AsProcess().SessionId);
+            using (var process = app.AsProcess()) {
+                return new Session(process.SessionId);
+            }
         }
 
-        public static bool IsActive(this Application app) {
+        public static bool IsActive(this xlApp app) {
             Requires.NotNull(app, nameof(app));
             return Equals(app, app.Session().TopMost);
         }
 
-        public static bool IsVisible(this Application app) {
+        public static void Activate(this xlApp app) {
             Requires.NotNull(app, nameof(app));
+            using (var process = app.AsProcess()) {
+                NativeMethods.BringToFront(process);
+            }
+        }
 
+        public static bool IsVisible(this xlApp app) {
+            Requires.NotNull(app, nameof(app));
             try {
-                return app.Visible
-                    && app.AsProcess().IsVisible();
+                using (var process = app.AsProcess()) {
+                    return app.Visible && process.IsVisible();
+                }
             }
             catch (COMException x)
             when (x.Message.StartsWith("The message filter indicated that the application is busy.")
@@ -31,7 +41,7 @@ namespace ExcelBrowser.Interop {
             }
         }
 
-        public static string VersionName(this Application app) {
+        public static string VersionName(this xlApp app) {
             Requires.NotNull(app, nameof(app));
             try {
                 var version = (int)float.Parse(app.Version);
@@ -53,6 +63,18 @@ namespace ExcelBrowser.Interop {
             catch {
                 return "Excel (Unknown version)";
             }
+        }
+
+        /// <summary>
+        /// Gets the Windows Process associated with the given Excel instance.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        public static Process AsProcess(this xlApp app) {
+            Requires.NotNull(app, nameof(app));
+
+            var mainWindowHandle = app.Hwnd;
+            var processId = NativeMethods.ProcessIdFromWindowHandle(mainWindowHandle);
+            return Process.GetProcessById(processId);
         }
     }
 }
