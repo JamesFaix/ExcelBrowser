@@ -20,12 +20,7 @@ namespace ExcelBrowser.ViewModels {
         public static AppViewModel ConvertApp(AppToken token) {
             Requires.NotNull(token, nameof(token));
 
-            var result = new AppViewModel {
-                ProcessId = token.Id.ProcessId,
-                IsActive = token.IsActive,
-                IsVisible = token.IsVisible,
-                Version = token.Version
-            };
+            var result = new AppViewModel(token);
             foreach (var bookToken in token.Books) {
                 result.Books.Add(ConvertBook(bookToken));
             }
@@ -35,11 +30,7 @@ namespace ExcelBrowser.ViewModels {
         public static BookViewModel ConvertBook(BookToken token) {
             Requires.NotNull(token, nameof(token));
 
-            var result = new BookViewModel {
-                Name = token.Id.BookName,
-                IsVisible = token.IsVisible,
-                IsActive = token.IsActive,
-                IsAddIn = token.IsAddIn,
+            var result = new BookViewModel(token) {
                 Windows = GetBookWindows(token)
             };
 
@@ -66,27 +57,20 @@ namespace ExcelBrowser.ViewModels {
 
         public static BookWindowViewModel ConvertWindow(WindowToken token) {
             Requires.NotNull(token, nameof(token));
-
-            return new BookWindowViewModel {
-                Index = token.Id.WindowIndex,
-                IsActive = token.IsActive,
-                IsVisible = token.IsVisible
-            };
+            return new BookWindowViewModel(token);
         }
 
         private static SheetViewModel GetSheet(SheetToken token, IEnumerable<ActiveSheet> activeSheets) {
-            var result = new SheetViewModel {
-                Name = token.Id.SheetName,
-                IsActive = token.IsActive,
-                IsVisible = token.IsVisible,
+            var result = new SheetViewModel(token) {
                 TabColor = token.TabColor
             };
+            var i = 1;
             foreach (var a in activeSheets) {
-                var win = new SheetWindowViewModel {
-                    TabColor = token.TabColor,
-                    IsActive = token.Id.SheetName == a.SheetName
+                var win = new SheetWindowViewModel(token, i) {
+                    IsActive = token.Id.SheetName == a.SheetName,
                 };
                 result.Windows.Add(win);
+                i++;
             }
             return result;
         }
@@ -100,6 +84,6 @@ namespace ExcelBrowser.ViewModels {
 
             public int WindowIndex { get; }
             public string SheetName { get; }
-        }        
+        }
     }
 }

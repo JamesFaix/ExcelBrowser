@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="LightGray">
         <StackPanel>
-            <Button Content="{Binding Name}" 
+            <Button Content="{Binding Label}" 
                         Foreground="{Binding Foreground}" Background="{Binding Background}" 
                         FontWeight="{Binding FontWeight}"
                         HorizontalContentAlignment="Left"/>

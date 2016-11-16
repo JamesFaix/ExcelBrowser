@@ -1,23 +1,25 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Media;
 using System.Windows;
+using ExcelBrowser.Model;
 
 namespace ExcelBrowser.ViewModels {
 
     public class SheetViewModel {
 
-        public SheetViewModel() {
+        public SheetViewModel(SheetToken token) {
+            Requires.NotNull(token, nameof(token));
+            Token = token;
             Windows = new ObservableCollection<SheetWindowViewModel>();
         }
 
-        public string Name { get; set; }
+        public SheetToken Token { get; }
 
-
-        public bool IsActive { get; set; }
-        public bool IsVisible { get; set; }
         public ObservableCollection<SheetWindowViewModel> Windows { get; set; }
 
-        public FontWeight FontWeight => IsActive ? FontWeights.Bold : FontWeights.Normal;
+        public string Label => Token.Id.SheetName;
+
+        public FontWeight FontWeight => Token.IsActive ? FontWeights.Bold : FontWeights.Normal;
 
         #region Color
 

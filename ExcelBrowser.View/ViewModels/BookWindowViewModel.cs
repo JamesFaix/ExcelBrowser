@@ -1,17 +1,21 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using ExcelBrowser.Model;
 
 namespace ExcelBrowser.ViewModels {
 
     public class BookWindowViewModel {
 
-        public int Index { get; set; }
-        public bool IsActive { get; set; }
-        public bool IsVisible { get; set; }
+        public BookWindowViewModel(WindowToken token) {
+            Requires.NotNull(token, nameof(token));
+            Token = token;
+        }
 
-        public string Label => $"[{Index}]";
+        public WindowToken Token { get; }
 
-        public Brush Background => new SolidColorBrush { Color = IsActive ? Colors.White : Colors.LightGray };
-        public FontWeight FontWeight => IsActive ? FontWeights.Bold : FontWeights.Normal;
+        public string Label => $"[{Token.Id.WindowIndex}]";
+
+        public Brush Background => new SolidColorBrush { Color = Token.IsActive ? Colors.White : Colors.LightGray };
+        public FontWeight FontWeight => Token.IsActive ? FontWeights.Bold : FontWeights.Normal;
     }
 }
